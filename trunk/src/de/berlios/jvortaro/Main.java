@@ -417,9 +417,9 @@ public class Main extends javax.swing.JFrame {
         text2 = text2.replaceAll("ch","cx");
         text2 = text2.replaceAll("sh","sx");
         
-        text2 = text2.replaceAll("sx","sx");
+        text2 = text2.replaceAll("sx","ŝ");
         text2 = text2.replaceAll("ux","ŭ");
-        text2 = text2.replaceAll("gx","gx");
+        text2 = text2.replaceAll("gx","ĝ");
         text2 = text2.replaceAll("jx","ĵ");
         text2 = text2.replaceAll("cx","ĉ");
         text2 = text2.replaceAll("hx","ĥ");
@@ -452,7 +452,7 @@ public class Main extends javax.swing.JFrame {
             //This is where a real application would open the file.
             for (int i=0; i<files.length; i++){
                 File file = files[i];
-                System.err.println("Apro file "+file.getName());
+                System.err.println("Opening file "+file.getName());
 
                 String name = file.getName();
                 String[] names = name.split("\\.");
@@ -472,7 +472,7 @@ public class Main extends javax.swing.JFrame {
 
             
         } else
-            System.err.println("Cancellato");
+            System.err.println("Cancel");
         
     }//GEN-LAST:event_jImportMenuItemActionPerformed
     
@@ -528,7 +528,7 @@ public class Main extends javax.swing.JFrame {
             return;
         
         StatusBarManager statusBar = new StatusBarManager(this);
-        statusBar.setMessage("Changing datenbanko");
+        statusBar.setMessage("ŝanĝi datenbanko");
         statusBar.setPosition(-1);
         statusBar.setStatus(StatusBarManager.Status.WAIT);
         updateStatusBar(statusBar);
@@ -583,7 +583,7 @@ public class Main extends javax.swing.JFrame {
             Common.showError(e);
         }
         
-        if (JOptionPane.showConfirmDialog(this,"ĉu te volas eliri?","Closing",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+        if (JOptionPane.showConfirmDialog(this,"Ĉu vi volas eliri?","Eliri",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
             
             if (database != null)
                 database.close();
@@ -666,7 +666,7 @@ public class Main extends javax.swing.JFrame {
             }
             
             mainTable.setModel(model);
-            //jStatusBar.setText("Trovati "+model.getRowCount()+" valori per il termine '"+filter+"'");
+            
         }catch(Exception e){
            Common.showError(e);
         }
@@ -692,7 +692,7 @@ public class Main extends javax.swing.JFrame {
         if (i < 0)
             jStatusBarProgress.setIndeterminate(true);
         else {
-            System.out.println("Aggiorno barra a "+i*100);
+            
             jStatusBarProgress.setIndeterminate(false);
             jStatusBarProgress.setMaximum(100);
             jStatusBarProgress.setValue((int) (i*100));
