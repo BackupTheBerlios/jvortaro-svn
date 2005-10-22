@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- You may freely edit this file. See commented blocks below for -->
+<!-- some examples of how to customize the build. -->
+<!-- (If you delete it and reopen the project it will be recreated.) -->
+<project name="jVortaro" default="default" basedir=".">
+    <description>Builds, tests, and runs the project jVortaro.</description>
+    <import file="nbproject/build-impl.xml"/>
+    
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+      <classpath>
+        <pathelement location="lib/ant-contrib.jar"/>
+      </classpath>
+    </taskdef>
+    
+    <target name="convert" depends="jar">
+      <property file="nbproject/project.properties"/>
+      <echo message="Creazione dizionari ${jvortaro.importDatabase}"/> 
+      <mkdir dir="${jnlp.dir}" />
+      <java classname="jvortaro.Convert"  fork="yes" >
+         <classpath>
+           <pathelement location="${dist.dir}/jVortaro.jar"/>
+         </classpath>
+      </java>
+    </target>
+
+    <target name="jnlp" depends="jar">
+      <property file="nbproject/project.properties"/>
+    
+      <!--delete dir="${jnlp.dir}" verbose="true"/-->
+      <mkdir dir="${jnlp.dir}"/>
+      <java classname="jvortaro.Export"  fork="yes">
+         <classpath>
+           <pathelement location="${dist.dir}/jVortaro.jar"/>
+         </classpath>
+      </java>
+      <jar destfile="${jnlp.dir}/languages.jar" >
+        <fileset dir="${jnlp.dir}"> 
+                <include name="languages.properties"/>
+        </fileset>
+      </jar>
+      <delete>
+       <fileset dir="${jnlp.dir}" includes="*.properties" />
+      </delete>
+    </target>
+    
+    <target name="dict">
+      <property file="nbproject/project.properties"/>
+    
+      <echo message="Creazione dizionari ${jnlp.dir}"/> 
+      <!--delete dir="${jnlp.dir}" verbose="true"/-->
+      <mkdir dir="${jnlp.dir}"/>
+      <java classname="jvortaro.Export"  fork="no">
+        <!--sysproperty key="jvortaro.database" value="true"/>
+        <sysproperty key="jvortaro.exportDirectory" value="true"/-->
+         <classpath>
+           <pathelement location="${dist.dir}/jVortaro.jar"/>
+         </classpath>
+      </java>
+      <jar destfile="${jnlp.dir}/languages.jar" >
+        <fileset dir="${jnlp.dir}"> 
+                <include name="languages.properties"/>
+        </fileset>
+      </jar>
+      <foreach target="jarDict" param="dbName">
+      	<path>
+	  <fileset dir="${jnlp.dir}">
+	    <include name="*.script"/>
+	  </fileset>
+	</path>
+      </foreach>
+      <delete>
+       <fileset dir="${jnlp.dir}" includes="*.properties" />
+       <fileset dir="${jnlp.dir}" includes="*.script" />
+      </delete>
+    </target>
+    
+    <target name="jarDict">
+	<property file="nbproject/project.properties"/>
+    
+    	<basename file="${dbName}" property="name" suffix=".db.script"/>
+	<jar destfile="${jnlp.dir}/${name}.jar" >
+		<fileset dir="${jnlp.dir}"> 
+			<include name="${name}.db.script"/>
+			<include name="${name}.db.data"/>
+			<include name="${name}.db.backup"/>
+			<include name="${name}.db.properties"/>
+		</fileset>
+	</jar>
+    </target>
+ 
+    <target name="copyJar">
+      <checksum file="${jarName}" property="sha" algorithm="SHA1" />
+      <basename file="${jarName}" property="name"/>
+      <checksum file="${jnlp.website}/${name}" property="${sha}" verifyProperty="isEqual"/>
+    </target>
+
+    <target name="copyLocalForrest">
+      <property file="nbproject/project.properties"/>
+      <copy todir="${jnlp.website}" verbose="true">
+        <fileset dir="${jnlp.dir}">
+          <different targetdir="${jnlp.website}" ignoreFileTimes="true"/>
+        </fileset>
+      </copy>
+      <copy todir="${jnlp.website}" verbose="true">
+      	<fileset file="dist/jVortaro.jar"/>
+	<fileset file="lib/hsqldb.jar.jar"/>
+      </copy>
+      <!--foreach target="copyJar" param="jarName">
+      	<path>
+	  <fileset dir="${jnlp.dir}">
+	    <include name="*.jar"/>
+	  </fileset>
+	</path>
+      </foreach-->
+      <!--exec executable="rsync">
+       <arg line="-v ${jnlp.dir}/* ${jnlp.website}"/>
+      </exec-->
+    </target>
+
+    <target name="web" depends="dict,copyLocalForrest"/>
+
+    <!--
+
+    There exist several targets which are by default empty and which can be 
+    used for execution of your tasks. These targets are usually executed 
+    before and after some main targets. They are: 
+
+      -pre-init:                 called before initialization of project properties
+      -post-init:                called after initialization of project properties
+      -pre-compile:              called before javac compilation
+      -post-compile:             called after javac compilation
+      -pre-compile-single:       called before javac compilation of single file
+      -post-compile-single:      called after javac compilation of single file
+      -pre-compile-test:         called before javac compilation of JUnit tests
+      -post-compile-test:        called after javac compilation of JUnit tests
+      -pre-compile-test-single:  called before javac compilation of single JUnit test
+      -post-compile-test-single: called after javac compilation of single JUunit test
+      -pre-jar:                  called before JAR building
+      -post-jar:                 called after JAR building
+      -post-clean:               called after cleaning build products
+
+    (Targets beginning with '-' are not intended to be called on their own.)
+
+    Example of inserting an obfuscator after compilation could look like this:
+
+        <target name="-post-compile">
+            <obfuscate>
+                <fileset dir="${build.classes.dir}"/>
+            </obfuscate>
+        </target>
+
+    For list of available properties check the imported 
+    nbproject/build-impl.xml file. 
+
+
+    Another way to customize the build is by overriding existing main targets.
+    The targets of interest are: 
+
+      -init-macrodef-javac:     defines macro for javac compilation
+      -init-macrodef-junit:     defines macro for junit execution
+      -init-macrodef-debug:     defines macro for class debugging
+      -init-macrodef-java:      defines macro for class execution
+      -do-jar-with-manifest:    JAR building (if you are using a manifest)
+      -do-jar-without-manifest: JAR building (if you are not using a manifest)
+      run:                      execution of project 
+      -javadoc-build:           Javadoc generation
+      test-report:              JUnit report generation
+
+    An example of overriding the target for project execution could look like this:
+
+        <target name="run" depends="jVortaro-impl.jar">
+            <exec dir="bin" executable="launcher.exe">
+                <arg file="${dist.jar}"/>
+            </exec>
+        </target>
+
+    Notice that the overridden target depends on the jar target and not only on 
+    the compile target as the regular run target does. Again, for a list of available 
+    properties which you can use, check the target you are overriding in the
+    nbproject/build-impl.xml file. 
+
+    -->
+</project>
