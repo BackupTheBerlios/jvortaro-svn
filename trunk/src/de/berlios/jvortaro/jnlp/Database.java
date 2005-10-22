@@ -106,12 +106,23 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
                 Common c = new Common();
                 dic = c.readXmlDatabase(new GZIPInputStream(fc.getInputStream()));
                 
-                String sDate = properties.getProperty(database+".data");
                 System.out.println("Local copy date "+dic.getDate());
-                if (sDate != null)
-                    System.out.println("Remote copy date "+new Date(Long.parseLong(sDate)));
+                ArrayList<LanguageInformation> li = getLanguagesAvailable();
                 
-                if (sDate != null && dic.getDate().compareTo(new Date(Long.parseLong(sDate))) >=0){
+                LanguageInformation language = null;
+                for (LanguageInformation l: li){
+                    if (l.getName().equalsIgnoreCase(database)) {
+                        language = l;
+                        break;
+                    }
+                }
+                if (language == null){
+                    System.out.println("Not found database?");
+                    return;
+                }
+                
+                System.out.println("Remote copy "+language.getLastChangeRemote());
+                if (dic.getDate().compareTo(language.getLastChangeRemote()) >=0){
                     System.out.println("There is a copy and it's up-to-date");
                     download = false;
                 }
@@ -199,7 +210,7 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
                     info.setFromEsperanto(true);
                 String sDate = properties.getProperty(lang[i]+".date");
                 if (sDate != null){
-                    info.setLastChangeLocal(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").parse(sDate));
+                    info.setLastChangeRemote(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").parse(sDate));
                 }
                 if (info.isFromEsperanto() || info.isFromLanguage())
                     result.add(info);

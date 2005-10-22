@@ -583,7 +583,7 @@ public class Main extends javax.swing.JFrame {
             Common.showError(e);
         }
         
-        if (JOptionPane.showConfirmDialog(this,"Do you want to exit?","Closing",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+        if (JOptionPane.showConfirmDialog(this,"ĉu te volas eliri?","Closing",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
             
             if (database != null)
                 database.close();

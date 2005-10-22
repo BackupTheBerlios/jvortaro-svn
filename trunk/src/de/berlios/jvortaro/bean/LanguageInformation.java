@@ -104,7 +104,7 @@ public class LanguageInformation {
     }
     
     /********** lastChangeRemote **************/
-    public void getLastChangeRemote(Date lastChangeRemote){
+    public void setLastChangeRemote(Date lastChangeRemote){
         this.lastChangeRemote = lastChangeRemote;
     }
     
