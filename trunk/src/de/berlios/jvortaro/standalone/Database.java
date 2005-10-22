@@ -26,16 +26,9 @@ package de.berlios.jvortaro.standalone;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.zip.GZIPInputStream;
-import javax.swing.SwingUtilities;
 import de.berlios.jvortaro.Common;
-import de.berlios.jvortaro.StatusBarManager;
 import de.berlios.jvortaro.bean.Dictionary;
 import de.berlios.jvortaro.bean.LanguageInformation;
 import de.berlios.jvortaro.bean.TableRow;
@@ -54,7 +47,6 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
     
     ArrayList<TableRow> data = null;
     
-    /** Creates a new instance of Database */
     public Database(){
         de.berlios.jvortaro.standalone.Service service = new de.berlios.jvortaro.standalone.Service();
         userDir = service.getUserDirectory();

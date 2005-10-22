@@ -37,7 +37,7 @@ import de.berlios.jvortaro.bean.Dictionary;
 import de.berlios.jvortaro.standalone.Service;
 
 /**
- * Classe che esporta il database corrente per la gestione attraverso jnlp
+ * 
  *
  * @author enrico
  */
@@ -61,7 +61,7 @@ public class Export {
                 if (f.endsWith(".vortaro")){
                     File file = new File(directory+"/"+f);
                     languageName.add(f.substring(0, f.length()-8));
-                    System.out.println("Leggo "+f);
+                    System.out.println("Reading "+f);
                     Dictionary dict = c.readXmlDatabase(new GZIPInputStream(new FileInputStream(file)));
                     long length = file.length();
                     d += String.format("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%tD</td></tr>",
@@ -117,7 +117,7 @@ public class Export {
                 }
                 properties.setProperty("languages",nameList);
                 properties.store(new FileOutputStream(exportDirectory+"/languages.properties"),"Languages data");
-                System.out.println("Dati salvati in "+exportDirectory+"/languages.properties");
+                System.out.println("Data written in  "+exportDirectory+"/languages.properties");
             }catch(IOException e){
                 e.printStackTrace();
             }

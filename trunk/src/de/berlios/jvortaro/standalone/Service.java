@@ -46,8 +46,8 @@ public class Service implements de.berlios.jvortaro.interfaces.Service {
         String myDir = userDir+"/.jVortaro";
         File file = new File(myDir);
         if (!file.exists()) {
-            JOptionPane.showMessageDialog(null,"E' stata creata la directory "+file.getAbsolutePath()+".",
-                    "Prima volta che viene eseguito",
+            JOptionPane.showMessageDialog(null,"Creating directory "+file.getAbsolutePath()+".",
+                    "First time execution",
                     JOptionPane.INFORMATION_MESSAGE);
             file.mkdir();
         }
@@ -58,7 +58,7 @@ public class Service implements de.berlios.jvortaro.interfaces.Service {
         
         String result = null;
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        //odd: the Object param of getContents is not currently used
+        
         Transferable contents = clipboard.getContents(null);
         boolean hasTransferableText = (contents != null) &&
                 contents.isDataFlavorSupported(DataFlavor.stringFlavor);
@@ -67,7 +67,7 @@ public class Service implements de.berlios.jvortaro.interfaces.Service {
                 result = (String)contents.getTransferData(DataFlavor.stringFlavor);
                 return result;
             } catch (UnsupportedFlavorException ex){
-                //highly unlikely since we are using a standard DataFlavor
+                
                 System.out.println(ex);
             } catch (IOException ex) {
                 System.out.println(ex);

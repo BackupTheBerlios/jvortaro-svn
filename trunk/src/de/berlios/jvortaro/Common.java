@@ -28,9 +28,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,7 +52,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 public class Common {
     
     /**
-     * Finestra per mostrare gli errori dell'applicazione
+     * Show application error
      */
     static public  void showError(Exception e){
         JOptionPane.showMessageDialog(null,e.getMessage(),"Application error",  JOptionPane.ERROR_MESSAGE);
@@ -69,17 +66,17 @@ public class Common {
 
         TableRow row = new TableRow();
         row.setLang1(filter+"%");
-        boolean trovato = false;
+        boolean found = false;
         
-        while (!trovato){
+        while (!found){
             int i = Collections.binarySearch(data,row, new Compare());
             
             if (i>=0){
 
-                trovato = true;
+                found = true;
                 int start = i;
                 
-                //Cerco quelli prima
+                //Search before
                 for (int h = start; h >= 0; h--){
                     TableRow tmp = data.get(h);
                     String value = tmp.getLang1();
@@ -88,9 +85,9 @@ public class Common {
                         break;
                     result.add(tmp);
                 }
-                //inverto elenco della ricerca
+                //reverse collected result
                 Collections.reverse(result);
-                //Cerco quelli dopo
+                //Search after
                 for (int h = start+1; h < data.size(); h++){
                     TableRow tmp = data.get(h);
                     String value = tmp.getLang1();
@@ -101,12 +98,12 @@ public class Common {
                 }
             }
             
-            if (!trovato) {
+            if (!found) {
                 if (filter.length()>0){
                      filter = filter.substring(0, filter.length()-1);
                      row.setLang1(filter+"%");
                 }else
-                   trovato = true;
+                   found = true;
             }
         }
         return result;
@@ -208,12 +205,11 @@ class Compare implements Comparator<TableRow> {
         System.out.print(lang1+" "+lang2+" ");
         lang1 = lang1.substring(0, lang1.length()-1);
         int reduction = lang1.length() < lang2.length() ? lang1.length() : lang2.length();
-        //String temp1 = lang1.substring(0, reduction);
+
         String temp1 = lang1;
         String temp2 = lang2.substring(0, reduction);
         System.out.println(temp1+" "+temp2+" "+factor);
         return factor * temp1.compareToIgnoreCase(temp2);
-                //lang1.substring(0, lang1.length()-1).compareTo(lang2.substring(0, lang1.length()-1));
         
     }   
 }

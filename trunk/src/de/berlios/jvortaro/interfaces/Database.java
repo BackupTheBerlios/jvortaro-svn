@@ -23,7 +23,6 @@
 
 package de.berlios.jvortaro.interfaces;
 import java.util.ArrayList;
-import javax.swing.table.TableModel;
 import de.berlios.jvortaro.bean.LanguageInformation;
 import de.berlios.jvortaro.bean.TableRow;
 
@@ -32,18 +31,18 @@ import de.berlios.jvortaro.bean.TableRow;
  * @author enrico
  */
 public interface Database {
-  /** ritorna l'elenco dei linguaggi disponibili per l'applicazione */
+  /** return list of available languages **/
   ArrayList<LanguageInformation> getLanguagesAvailable() throws Exception;
   
-  /** cerca parola nel database */
+  /** search for a word in database */
   ArrayList<TableRow> search(String valore) throws Exception;
   
-  /** Cambia linguaggio corrente */
+  /** Change current language */
   void changeLanguage(String from, String to);
   
-  /** Chiude il collegamento al database */
+  /** Close database connection (if any) */
   void close();
   
-  /** importa un set di lemmi al database */
+  /** import items */
   void importLanguages (ArrayList<TableRow> dati,String langForm, String langTo, boolean isChached) throws Exception;
 }

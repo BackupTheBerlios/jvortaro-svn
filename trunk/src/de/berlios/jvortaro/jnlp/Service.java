@@ -52,7 +52,7 @@ public class Service implements de.berlios.jvortaro.interfaces.Service {
         }
 
         if (cs != null) {
-            // get the contents of the system clipboard and print them
+            
             Transferable tr = cs.getContents();
             if (tr.isDataFlavorSupported(DataFlavor.stringFlavor)) {
                try {
@@ -81,7 +81,7 @@ public class Service implements de.berlios.jvortaro.interfaces.Service {
             try {
                 names = ps.getNames(codebase);
             } catch( java.lang.NullPointerException e){
-                System.out.println("Errore stupido di webstart: non ci sono muffin");
+                System.out.println("Stupid webstart error: there aren't muffins");
             };
             
             if (!Common.find(names, "jVortaro.properties"))

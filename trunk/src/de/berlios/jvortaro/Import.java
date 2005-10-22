@@ -36,9 +36,9 @@ import de.berlios.jvortaro.bean.TableRow;
 public class Import {
     
    /**
-    * Legge una coppia di valori dal file di import di la-vortaro.net
+    * Read a couple of value from  la-vortaro.net dicionary
     */
-   private TableRow leggiCoppia(FileInputStream fi) throws Exception{
+   private TableRow readCouple(FileInputStream fi) throws Exception{
         byte[] buff1 = new byte[31];
         int i = fi.read(buff1);
         if (i < 0)
@@ -63,16 +63,16 @@ public class Import {
     }
 
     /**
-     *Legge un file di tipo vortaro.net
+     * read an la-vortaro.net file
      */
     public  ArrayList<TableRow>  importFile(File file){
         ArrayList<TableRow> dati = new ArrayList<TableRow>();
         try {
             FileInputStream fi = new FileInputStream(file);
-            TableRow coppia = leggiCoppia(fi);
+            TableRow coppia = readCouple(fi);
             while( coppia != null) {
                 dati.add(coppia);
-                coppia = leggiCoppia(fi);
+                coppia = readCouple(fi);
             }
          
         }catch(Exception e){

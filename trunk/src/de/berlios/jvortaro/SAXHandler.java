@@ -51,7 +51,7 @@ public class SAXHandler extends DefaultHandler {
     }
     
     public void startElement(String str, String str1, String str2, org.xml.sax.Attributes attributes) throws org.xml.sax.SAXException {
-       // System.out.println("Namespace "+str+" localName "+str1+" qualifiedName "+str2);
+       
         if (str2.equalsIgnoreCase("dictionary")){
             dictionary = new Dictionary();
             String name = attributes.getValue("lang");
@@ -60,7 +60,7 @@ public class SAXHandler extends DefaultHandler {
             try {
                 date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").parse(sDate);
             }catch(Exception e){
-                System.out.println("Data "+sDate+" non formattata correttamente");
+                System.out.println("Date "+sDate+" non correctly formatted");
                 date = new Date(System.currentTimeMillis());
             }
             dictionary.setDate(date);

@@ -63,7 +63,7 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
         if (to.equalsIgnoreCase(langFrom) && from.equalsIgnoreCase(langTo)){
             langTo = to;
             langFrom = from;
-            //data = new Common().search(conn,table, "%");
+            
             if (langFrom.equalsIgnoreCase("esperanto"))
                 data = dic.getFromLang1();
             else
@@ -79,7 +79,7 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
         try {
             BasicService bs = (BasicService)ServiceManager.lookup("javax.jnlp.BasicService");
             PersistenceService ps = (PersistenceService)ServiceManager.lookup("javax.jnlp.PersistenceService");
-            System.out.println("Persisten service "+ps);
+            System.out.println("Persisten service: "+ps);
             URL codeBase = bs.getCodeBase();
             System.out.println("Codebase "+codeBase);
             
@@ -90,10 +90,10 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
             try {
                 names = ps.getNames(codeBase);
             } catch( java.lang.NullPointerException e){
-                System.out.println("Errore stupido di webstart: non ci sono muffin");
+                System.out.println("Stupid webstart error: there aren't muffins");
             };
             
-            System.out.println("Letto "+url);
+            System.out.println("Read "+url);
             
             boolean download = true;
             boolean nuovo = true;
@@ -112,14 +112,14 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
                     System.out.println("Remote copy date "+new Date(Long.parseLong(sDate)));
                 
                 if (sDate != null && dic.getDate().compareTo(new Date(Long.parseLong(sDate))) >=0){
-                    System.out.println("Esiste una copia ed è aggiornata");
+                    System.out.println("There is a copy and it's up-to-date");
                     download = false;
                 }
             }
             
             if (download){
                 // dict doesn't exist  locallay
-                System.out.println("Scarico una copia nuova");
+                System.out.println("Downloading a new copy");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 InputStream inputStream = connection.getInputStream();
                 int length = connection.getContentLength();
@@ -143,12 +143,12 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
                         statusBar.setPosition((float)pos/buffer.length);
                         SwingUtilities.invokeAndWait(statusBar);
                     }
-                    // giro tondo
+                    // giro tondo (looping)
                 }
                 statusBar.setPosition(1);
                 SwingUtilities.invokeAndWait(statusBar);
                 inputStream.close();
-                System.out.println("Scaricato");
+                System.out.println("Downloaded");
                 
                 FileContents fc = ps.get(url);
                 OutputStream os = fc.getOutputStream(false);
@@ -175,7 +175,7 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
     }
     
     public void close() {
-        System.out.println("Chiudo connessione");
+        
     }
     
     public ArrayList<LanguageInformation> getLanguagesAvailable() throws Exception {
