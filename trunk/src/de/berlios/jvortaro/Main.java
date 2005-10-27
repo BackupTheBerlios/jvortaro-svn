@@ -289,32 +289,9 @@ public class Main extends javax.swing.JFrame {
         jScrollPane.setComponentPopupMenu(jPopupMenu);
         jScrollPane.setPreferredSize(new java.awt.Dimension(453, 103));
         mainTable.setComponentPopupMenu(jPopupMenu);
-        mainTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Lingua 1", "Lingua 2"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        mainTable.setModel(new de.berlios.jvortaro.TableModel());
         mainTable.setInheritsPopupMenu(true);
         mainTable.setMinimumSize(new java.awt.Dimension(30, 164));
-        mainTable.setPreferredSize(null);
         jScrollPane.setViewportView(mainTable);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -494,7 +471,6 @@ public class Main extends javax.swing.JFrame {
     
     private void jLang1RadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLang1RadioActionPerformed
         
-        
         final String lang1 = jLang1Radio.getText();
         final String lang2 = jLang2Radio.getText();
         TableColumnModel columnModel = mainTable.getColumnModel();
@@ -612,9 +588,6 @@ public class Main extends javax.swing.JFrame {
         }
         return model;
     }
-    
-    
- 
     
     /**
      *Cancella i campi quando si cambia lingua

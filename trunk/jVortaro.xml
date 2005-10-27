@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- JNLP File for SwingSet2 Demo Application -->
 <jnlp
-  spec="1.4+"
+  spec="1.5"
   codebase="http://jVortaro.berlios.de/jnlp/"
   href="jVortaro.jnlp"
   >
@@ -17,7 +17,7 @@
   </information>
   <resources>
     <property name="javaws.debug" value="true" />
-    <j2se version="1.4+"/>
+    <j2se version="1.5"/>
     <jar href="jVortaro.jar"/>
     <jar href="languages.jar"/>
     <template/>
