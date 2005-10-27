@@ -156,6 +156,7 @@ public class Main extends javax.swing.JFrame {
         jStatusBarLabel = new javax.swing.JLabel();
         jStatusBarProgress = new javax.swing.JProgressBar();
         jPanel3 = new javax.swing.JPanel();
+        jEditButton = new javax.swing.JToggleButton();
         jButtonAbout = new javax.swing.JButton();
         jButtonExit = new javax.swing.JButton();
 
@@ -208,6 +209,7 @@ public class Main extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
         getContentPane().add(jLanguagesCombo, gridBagConstraints);
 
         jLabel1.setText("Ero:");
@@ -269,7 +271,7 @@ public class Main extends javax.swing.JFrame {
 
         jPanel1.add(jLang1Radio);
 
-        jLang2Radio.setText("ligvo 2");
+        jLang2Radio.setText("lingvo 2");
         jLang2Radio.setEnabled(false);
         jLang2Radio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -284,6 +286,7 @@ public class Main extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
         getContentPane().add(jPanel1, gridBagConstraints);
 
         jScrollPane.setComponentPopupMenu(jPopupMenu);
@@ -297,10 +300,11 @@ public class Main extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 5;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
         getContentPane().add(jScrollPane, gridBagConstraints);
 
         jPanel2.setLayout(new java.awt.BorderLayout());
@@ -315,11 +319,20 @@ public class Main extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 5;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         getContentPane().add(jPanel2, gridBagConstraints);
 
         jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        jEditButton.setText("Editu");
+        jEditButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jEditButtonActionPerformed(evt);
+            }
+        });
+
+        jPanel3.add(jEditButton);
 
         jButtonAbout.setText("Koncerne...");
         jButtonAbout.addActionListener(new java.awt.event.ActionListener() {
@@ -342,13 +355,18 @@ public class Main extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 5;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         getContentPane().add(jPanel3, gridBagConstraints);
 
         pack();
     }
     // </editor-fold>//GEN-END:initComponents
+
+    private void jEditButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEditButtonActionPerformed
+
+        ((TableModel)mainTable.getModel()).setEditable(jEditButton.isSelected());
+    }//GEN-LAST:event_jEditButtonActionPerformed
 
     private void jButtonExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExitActionPerformed
 
@@ -678,6 +696,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAbout;
     private javax.swing.JButton jButtonExit;
     private javax.swing.JMenuItem jCancellaMenuItem;
+    private javax.swing.JToggleButton jEditButton;
     private javax.swing.JCheckBox jFollowCheck;
     private javax.swing.JMenuItem jImportMenuItem;
     private javax.swing.JMenuItem jInserisciMenuItem;
