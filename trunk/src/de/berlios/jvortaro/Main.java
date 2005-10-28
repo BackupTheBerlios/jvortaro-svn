@@ -35,6 +35,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
@@ -43,6 +44,7 @@ import de.berlios.jvortaro.bean.LanguageInformation;
 import de.berlios.jvortaro.bean.TableRow;
 import de.berlios.jvortaro.interfaces.Database;
 import de.berlios.jvortaro.interfaces.Service;
+import javax.swing.DefaultCellEditor;
 
 /**
  *
@@ -58,9 +60,18 @@ public class Main extends javax.swing.JFrame {
     Service service;
     static public Main main;
     private boolean webstart = false;
-   
+    private JTextField tableEditor;
+    
     public Main() {
         initComponents();
+        
+        tableEditor = new JTextField();
+        tableEditor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jEditorFieldKeyReleased(evt);
+            }
+        });
+        
         main = this;
         if (System.getProperty("javaws.debug")!= null){
             database = new de.berlios.jvortaro.jnlp.Database();
@@ -394,31 +405,12 @@ public class Main extends javax.swing.JFrame {
         
     private void jTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldKeyReleased
         
+     
         if (!jLang1Radio.isSelected())
             return;
         int carret = jTextField.getCaretPosition();
         String text = jTextField.getText();
-        String text2 = text.replaceAll("s^","sx");
-        text2 = text2.replaceAll("u^","ux");
-        text2 = text2.replaceAll("g^","gx");
-        text2 = text2.replaceAll("j^","jx");
-        text2 = text2.replaceAll("c^","cx");
-        text2 = text2.replaceAll("h^","hx");
-        
-        text2 = text2.replaceAll("hh","hx");
-        text2 = text2.replaceAll("uh","ux");
-        text2 = text2.replaceAll("w","ux");
-        text2 = text2.replaceAll("gh","gx");
-        text2 = text2.replaceAll("jh","jx");
-        text2 = text2.replaceAll("ch","cx");
-        text2 = text2.replaceAll("sh","sx");
-        
-        text2 = text2.replaceAll("sx","\u015D");
-        text2 = text2.replaceAll("ux","\u016D");
-        text2 = text2.replaceAll("gx","\u011D");
-        text2 = text2.replaceAll("jx","\u0135");
-        text2 = text2.replaceAll("cx","\u0109");
-        text2 = text2.replaceAll("hx","\u0125");
+        String text2 = replaceChars(text);
         
         if (!text.equalsIgnoreCase(text2)){
             jTextField.setText(text2);
@@ -480,9 +472,8 @@ public class Main extends javax.swing.JFrame {
         
         String lang1 = jLang1Radio.getText();
         String lang2 = jLang2Radio.getText();
-        TableColumnModel columnModel = mainTable.getColumnModel();
-        columnModel.getColumn(0).setHeaderValue(lang2);
-        columnModel.getColumn(1).setHeaderValue(lang1);
+
+        changeColumnHeaders(lang2, lang1);
         resetTableAndTextField();
         database.changeLanguage(lang2,lang1);
         jScrollPane.repaint();
@@ -492,10 +483,8 @@ public class Main extends javax.swing.JFrame {
         
         final String lang1 = jLang1Radio.getText();
         final String lang2 = jLang2Radio.getText();
-        TableColumnModel columnModel = mainTable.getColumnModel();
-        columnModel.getColumn(0).setHeaderValue(lang1);
-        columnModel.getColumn(1).setHeaderValue(lang2);
-        mainTable.setColumnModel(columnModel);
+        
+        changeColumnHeaders(lang1, lang2);
 
         final SwingWorker swingWorker = new SwingWorker(){
           public Object construct()  {
@@ -587,7 +576,7 @@ public class Main extends javax.swing.JFrame {
     }
     
     /**
-     * Aggiorna l'interfaccia grafica con l'elenco dei linguaggi disponibili
+     * update gui with available languages
      */
     private ComboBoxModel getLanguagesAvailable() throws Exception{
         
@@ -609,7 +598,7 @@ public class Main extends javax.swing.JFrame {
     }
     
     /**
-     *Cancella i campi quando si cambia lingua
+     * Clear field changing language
      */
     private void  resetTableAndTextField(){
         DefaultTableModel model = (DefaultTableModel)mainTable.getModel();
@@ -636,7 +625,7 @@ public class Main extends javax.swing.JFrame {
     }
     
     /**
-     * cerca una parola nel database
+     * search for a word in database
      */
     private void search(){
         try {
@@ -665,9 +654,76 @@ public class Main extends javax.swing.JFrame {
     }
     
     /**
-     * @param args the command line arguments
+     *  Change chars to Esperanto in cell editor
+     * */
+    private void jEditorFieldKeyReleased(java.awt.event.KeyEvent evt) {
+
+        JTextField field = (JTextField) evt.getComponent();
+        
+        int carret = field.getCaretPosition();
+        String text = field.getText();
+        String text2 = replaceChars(text);
+        
+        if (!text.equalsIgnoreCase(text2)){
+            field.setText(text2);
+            int a = text2.length();
+            carret = text2.length()<carret?text2.length():carret;
+            field.setCaretPosition(carret);
+        }
+    }   
+          
+    /**
+     * Change column headers and editor
      */
-    public static void main(String args[]) {
+    private void changeColumnHeaders(String lang1, String lang2){
+        
+        TableColumnModel columnModel = mainTable.getColumnModel();
+        
+        columnModel.getColumn(0).setHeaderValue(lang1);
+        columnModel.getColumn(1).setHeaderValue(lang2);
+
+        int first = 0;
+        int second = 1;
+        if (!lang1.equalsIgnoreCase("esperanto")){
+            first = 1;
+            second = 0;
+        }
+        columnModel.getColumn(first).setCellEditor(new DefaultCellEditor(tableEditor));
+        columnModel.getColumn(second).setCellEditor(new DefaultCellEditor(new JTextField()));
+        
+        mainTable.setColumnModel(columnModel);
+
+    }
+    
+    /** Replace combination of chars with esperanto one */
+    private String replaceChars(String text){
+        
+        text = text.replaceAll("s^","sx");
+        text = text.replaceAll("u^","ux");
+        text = text.replaceAll("g^","gx");
+        text = text.replaceAll("j^","jx");
+        text = text.replaceAll("c^","cx");
+        text = text.replaceAll("h^","hx");
+        
+        text = text.replaceAll("hh","hx");
+        text = text.replaceAll("uh","ux");
+        text = text.replaceAll("w","ux");
+        text = text.replaceAll("gh","gx");
+        text = text.replaceAll("jh","jx");
+        text = text.replaceAll("ch","cx");
+        text = text.replaceAll("sh","sx");
+        
+        text = text.replaceAll("sx","\u015D");
+        text = text.replaceAll("ux","\u016D");
+        text = text.replaceAll("gx","\u011D");
+        text = text.replaceAll("jx","\u0135");
+        text = text.replaceAll("cx","\u0109");
+        text = text.replaceAll("hx","\u0125");
+        
+        return text;
+    }
+    
+     public static void main(String args[]) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) { }
@@ -678,6 +734,9 @@ public class Main extends javax.swing.JFrame {
         });
     }
     
+    /**
+     * Update status bar
+     * */
     public void updateStatusBar(StatusBarManager manager){
         jStatusBarLabel.setText(manager.getMessage());
         float i = manager.getPosition();
