@@ -406,18 +406,19 @@ public class Main extends javax.swing.JFrame {
         text2 = text2.replaceAll("h^","hx");
         
         text2 = text2.replaceAll("hh","hx");
+        text2 = text2.replaceAll("uh","ux");
         text2 = text2.replaceAll("w","ux");
         text2 = text2.replaceAll("gh","gx");
         text2 = text2.replaceAll("jh","jx");
         text2 = text2.replaceAll("ch","cx");
         text2 = text2.replaceAll("sh","sx");
         
-        text2 = text2.replaceAll("sx","ŝ");
-        text2 = text2.replaceAll("ux","ŭ");
-        text2 = text2.replaceAll("gx","ĝ");
-        text2 = text2.replaceAll("jx","ĵ");
-        text2 = text2.replaceAll("cx","ĉ");
-        text2 = text2.replaceAll("hx","ĥ");
+        text2 = text2.replaceAll("sx","\u015D");
+        text2 = text2.replaceAll("ux","\u016D");
+        text2 = text2.replaceAll("gx","\u011D");
+        text2 = text2.replaceAll("jx","\u0135");
+        text2 = text2.replaceAll("cx","\u0109");
+        text2 = text2.replaceAll("hx","\u0125");
         
         if (!text.equalsIgnoreCase(text2)){
             jTextField.setText(text2);
@@ -522,7 +523,7 @@ public class Main extends javax.swing.JFrame {
             return;
         
         StatusBarManager statusBar = new StatusBarManager(this);
-        statusBar.setMessage("ŝanĝi datenbanko");
+        statusBar.setMessage("\u015Dan\u011Di datenbanko");
         statusBar.setPosition(-1);
         statusBar.setStatus(StatusBarManager.Status.WAIT);
         updateStatusBar(statusBar);
@@ -577,7 +578,7 @@ public class Main extends javax.swing.JFrame {
             Common.showError(e);
         }
         
-        if (JOptionPane.showConfirmDialog(this,"Ĉu vi volas eliri?","Eliri",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+        if (JOptionPane.showConfirmDialog(this,"\u0108u vi volas eliri?","Eliri",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
             
             if (database != null)
                 database.close();

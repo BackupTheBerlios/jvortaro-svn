@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 import javax.swing.JOptionPane;
 
@@ -78,7 +79,12 @@ public class Service implements de.berlios.jvortaro.interfaces.Service {
 
     public Properties loadProperties() throws Exception{
         Properties properties = new Properties();
-        properties.load(new FileInputStream(getUserDirectory()+"/jVortaro.properties"));
+        try{
+            InputStream is = new FileInputStream(getUserDirectory()+"/jVortaro.properties");
+            properties.load(is);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         return properties;
     }
 
