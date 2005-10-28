@@ -9,30 +9,25 @@
         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jPopupMenu.setInvoker(mainTable);"/>
       </AuxValues>
       <SubComponents>
-        <MenuItem class="javax.swing.JCheckBoxMenuItem" name="jModificaMenuItem">
+        <MenuItem class="javax.swing.JMenuItem" name="jInsertMenuItem">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Modifica"/>
+            <Property name="text" type="java.lang.String" value="Insert"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jModificaMenuItemActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jInsertMenuItemActionPerformed"/>
           </Events>
         </MenuItem>
-        <MenuItem class="javax.swing.JMenuItem" name="jInserisciMenuItem">
+        <MenuItem class="javax.swing.JMenuItem" name="jRemoveMenuItem">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Inserisci"/>
-            <Property name="enabled" type="boolean" value="false"/>
+            <Property name="text" type="java.lang.String" value="Remove"/>
           </Properties>
-        </MenuItem>
-        <MenuItem class="javax.swing.JMenuItem" name="jCancellaMenuItem">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Cancella"/>
-            <Property name="enabled" type="boolean" value="false"/>
-          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRemoveMenuItemActionPerformed"/>
+          </Events>
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="jImportMenuItem">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Importa..."/>
-            <Property name="enabled" type="boolean" value="false"/>
+            <Property name="text" type="java.lang.String" value="Import ..."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jImportMenuItemActionPerformed"/>

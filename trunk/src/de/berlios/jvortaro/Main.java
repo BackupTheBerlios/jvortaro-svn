@@ -35,7 +35,9 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
@@ -61,7 +63,8 @@ public class Main extends javax.swing.JFrame {
     static public Main main;
     private boolean webstart = false;
     private JTextField tableEditor;
-    
+    private JPopupMenu menu;
+            
     public Main() {
         initComponents();
         
@@ -72,13 +75,21 @@ public class Main extends javax.swing.JFrame {
             }
         });
         
+        mainTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        
         main = this;
+
+        if (jScrollPane.getComponentPopupMenu() != null)
+            menu = jScrollPane.getComponentPopupMenu();
+        else 
+            menu = mainTable.getComponentPopupMenu();
+        jScrollPane.setComponentPopupMenu(null);
+        mainTable.setComponentPopupMenu(null);
+        
         if (System.getProperty("javaws.debug")!= null){
             database = new de.berlios.jvortaro.jnlp.Database();
             service = new de.berlios.jvortaro.jnlp.Service();
             webstart = true;
-            jScrollPane.setComponentPopupMenu(null);
-            mainTable.setComponentPopupMenu(null);
         }else {
             database = new de.berlios.jvortaro.standalone.Database();
             service = new de.berlios.jvortaro.standalone.Service();
@@ -149,9 +160,8 @@ public class Main extends javax.swing.JFrame {
 
         buttonGroup = new javax.swing.ButtonGroup();
         jPopupMenu = new javax.swing.JPopupMenu();
-        jModificaMenuItem = new javax.swing.JCheckBoxMenuItem();
-        jInserisciMenuItem = new javax.swing.JMenuItem();
-        jCancellaMenuItem = new javax.swing.JMenuItem();
+        jInsertMenuItem = new javax.swing.JMenuItem();
+        jRemoveMenuItem = new javax.swing.JMenuItem();
         jImportMenuItem = new javax.swing.JMenuItem();
         jLanguagesCombo = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
@@ -172,25 +182,25 @@ public class Main extends javax.swing.JFrame {
         jButtonExit = new javax.swing.JButton();
 
         jPopupMenu.setInvoker(mainTable);
-        jModificaMenuItem.setText("Modifica");
-        jModificaMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        jInsertMenuItem.setText("Insert");
+        jInsertMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jModificaMenuItemActionPerformed(evt);
+                jInsertMenuItemActionPerformed(evt);
             }
         });
 
-        jPopupMenu.add(jModificaMenuItem);
+        jPopupMenu.add(jInsertMenuItem);
 
-        jInserisciMenuItem.setText("Inserisci");
-        jInserisciMenuItem.setEnabled(false);
-        jPopupMenu.add(jInserisciMenuItem);
+        jRemoveMenuItem.setText("Remove");
+        jRemoveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRemoveMenuItemActionPerformed(evt);
+            }
+        });
 
-        jCancellaMenuItem.setText("Cancella");
-        jCancellaMenuItem.setEnabled(false);
-        jPopupMenu.add(jCancellaMenuItem);
+        jPopupMenu.add(jRemoveMenuItem);
 
-        jImportMenuItem.setText("Importa...");
-        jImportMenuItem.setEnabled(false);
+        jImportMenuItem.setText("Import ...");
         jImportMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jImportMenuItemActionPerformed(evt);
@@ -374,9 +384,43 @@ public class Main extends javax.swing.JFrame {
     }
     // </editor-fold>//GEN-END:initComponents
 
+    private void jInsertMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInsertMenuItemActionPerformed
+        ListSelectionModel selectionModel = mainTable.getSelectionModel();
+        int max = selectionModel.getMaxSelectionIndex();
+
+        DefaultTableModel model = (DefaultTableModel) mainTable.getModel();
+        model.insertRow(++max, (Object[])null);
+           
+    }//GEN-LAST:event_jInsertMenuItemActionPerformed
+
+    private void jRemoveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRemoveMenuItemActionPerformed
+
+        ListSelectionModel selectionModel = mainTable.getSelectionModel();
+        int max = selectionModel.getMaxSelectionIndex();
+        int min = selectionModel.getMinSelectionIndex();
+        if (min != -1){
+            System.out.println("Selecion ["+min+","+max+"]");
+            DefaultTableModel model = (DefaultTableModel) mainTable.getModel();
+            for (int i = min; i <= max; i++){
+                System.out.println("Riga "+i);
+                model.removeRow(min);
+            }
+        }
+
+    }//GEN-LAST:event_jRemoveMenuItemActionPerformed
+
     private void jEditButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEditButtonActionPerformed
 
         ((TableModel)mainTable.getModel()).setEditable(jEditButton.isSelected());
+        JPopupMenu newMenu;
+        if (jEditButton.isSelected())
+            newMenu = menu;
+        else
+            newMenu = null;
+
+        jScrollPane.setComponentPopupMenu(newMenu);
+        mainTable.setComponentPopupMenu(newMenu);
+        
     }//GEN-LAST:event_jEditButtonActionPerformed
 
     private void jButtonExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExitActionPerformed
@@ -389,20 +433,7 @@ public class Main extends javax.swing.JFrame {
         About about = new About(this,true);
         about.setVisible(true);
     }//GEN-LAST:event_jButtonAboutActionPerformed
-    
-    private void jModificaMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jModificaMenuItemActionPerformed
-        
-        if (jModificaMenuItem.isSelected()){
-            jImportMenuItem.setEnabled(true);
-            jInserisciMenuItem.setEnabled(true);
-            jCancellaMenuItem.setEnabled(true);
-        }else{
-            jImportMenuItem.setEnabled(false);
-            jInserisciMenuItem.setEnabled(false);
-            jCancellaMenuItem.setEnabled(false);
-        }
-    }//GEN-LAST:event_jModificaMenuItemActionPerformed
-        
+            
     private void jTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldKeyReleased
         
      
@@ -755,20 +786,19 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup;
     private javax.swing.JButton jButtonAbout;
     private javax.swing.JButton jButtonExit;
-    private javax.swing.JMenuItem jCancellaMenuItem;
     private javax.swing.JToggleButton jEditButton;
     private javax.swing.JCheckBox jFollowCheck;
     private javax.swing.JMenuItem jImportMenuItem;
-    private javax.swing.JMenuItem jInserisciMenuItem;
+    private javax.swing.JMenuItem jInsertMenuItem;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JRadioButton jLang1Radio;
     private javax.swing.JRadioButton jLang2Radio;
     private javax.swing.JComboBox jLanguagesCombo;
-    private javax.swing.JCheckBoxMenuItem jModificaMenuItem;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPopupMenu jPopupMenu;
+    private javax.swing.JMenuItem jRemoveMenuItem;
     private javax.swing.JScrollPane jScrollPane;
     private javax.swing.JButton jSearchButton;
     private javax.swing.JLabel jStatusBarLabel;
