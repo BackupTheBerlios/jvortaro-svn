@@ -169,7 +169,9 @@ public class Common {
             String sDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(dict.getDate());
             
             if (lang != null)
-                ps.println(String.format("<dictionary lang=\"%s\" date=\"%s\">",lang,sDate));
+                ps.println(String.format("<dictionary lang=\"%s\" date=\"%s\" xmlns=\"http://jVortaro.berlios.ds/ns\""+
+            "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""+
+            "xsi:schemaLocation=\"http://jVortaro.berlios.ds/ns http://jVortaro.berlios.de/ns/vortaro-dict.xsd\">",lang,sDate));
             else
                 ps.println("<dictionary>");
 	    
