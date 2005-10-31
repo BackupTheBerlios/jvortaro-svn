@@ -47,7 +47,7 @@
         </xsd:element>
       </xsd:sequence>
     <xsd:attribute name="lang" type="xsd:string"/>
-    <xsd:attribute name="date" type="xsd:dateTime"/>
+    <xsd:attribute name="date" type="xsd:string"/>
   </xsd:complexType>
 
      
