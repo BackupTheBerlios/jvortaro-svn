@@ -23,6 +23,7 @@
 
 package de.berlios.jvortaro;
 
+import de.berlios.jvortaro.bean.Dictionary;
 import de.berlios.jvortaro.bean.TableRow;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
@@ -39,6 +40,7 @@ public class TableModel extends AbstractTableModel {
 
     private String[] header = new String [] {"Lingvo 1", "Lingvo 2"};
     private ArrayList<TableRow> data = new ArrayList<TableRow>();
+    private Dictionary dictionary = null;
     
     public TableModel() {
         super();
@@ -97,15 +99,20 @@ public class TableModel extends AbstractTableModel {
     }
     
     public void removeRow(int row){
+        
+        // warn dict ....
         data.remove(row);
     }
     
     public void insertRow(int row, TableRow data){
+        
         this.data.add(row,data);
         fireTableRowsInserted(row,row);
     }
     
     public void setValueAt(Object o, int row, int column){
+        
+        // warn dict, insert new row from returned by dict
         String value = (String)o;
         if (column == 0)
             getValueAt(row).setLang1(value);
@@ -113,4 +120,9 @@ public class TableModel extends AbstractTableModel {
             getValueAt(row).setLang2(value);
         fireTableRowsUpdated(row,row);
     }
+    
+    public void setDictionary(Dictionary dict){
+        this.dictionary = dict
+    }
+    
 }
