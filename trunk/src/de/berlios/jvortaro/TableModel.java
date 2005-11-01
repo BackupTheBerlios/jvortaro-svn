@@ -23,19 +23,26 @@
 
 package de.berlios.jvortaro;
 
-import javax.swing.table.DefaultTableModel;
+import de.berlios.jvortaro.bean.TableRow;
+import java.util.ArrayList;
+import javax.swing.table.AbstractTableModel;
+
 
 
 /**
  *
  * @author enrico
  */
-public class TableModel extends DefaultTableModel {
+public class TableModel extends AbstractTableModel {
     
     boolean editable = false;
 
+    private String[] header = new String [] {"Lingvo 1", "Lingvo 2"};
+    private ArrayList<TableRow> data = new ArrayList<TableRow>();
+    
     public TableModel() {
-        super(new Object [][] {},new String [] {"Lingvo 1", "Lingvo 2"});
+        super();
+       //new Object [][] {},);
     }
 
     public void setEditable(boolean editable){
@@ -46,9 +53,64 @@ public class TableModel extends DefaultTableModel {
         return editable;
     }
 
-    public Class getColumnClass(int param) {
+    public Class getColumnClass(int column) {
         return String.class;
     }
 
+    public int getColumnCount() {
+        return header.length;
+    }
+
+    public int getRowCount() {
+        return data.size();
+    }
+
+    public Object getValueAt(int row, int column) {
+        TableRow r = getValueAt(row);
+        String[] result = new String[2];
+        result[0] = r.getLang1();
+        result[1] = r.getLang2();
+        return result[column];
+    }
+
+    public TableRow getValueAt(int row) {
+        return data.get(row);
+    }
+
+    public void clear(){
+        
+        data.clear();
+    }
     
+    public void addRow(TableRow row){
+        
+        data.add(row);
+        fireTableRowsInserted(data.size()-1, data.size());
+    }
+    
+    public void addRows(ArrayList<TableRow> rows){
+
+        int before = data.size();
+        data.addAll(rows);
+        int after = data.size();
+        fireTableRowsInserted(before, after);
+    }
+    
+    public void removeRow(int row){
+        data.remove(row);
+    }
+    
+    public void insertRow(int row, TableRow data){
+        this.data.add(row,data);
+        fireTableRowsInserted(row,row);
+    }
+    
+    public void setValueAt(Object o, int row, int column){
+        String value = (String)o;
+        if (column == 0)
+            getValueAt(row).setLang1(value);
+        else
+            getValueAt(row).setLang2(value);
+        fireTableRowsUpdated(row,row);
+    }
 }

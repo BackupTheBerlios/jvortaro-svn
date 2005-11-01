@@ -36,6 +36,7 @@ public class Dictionary {
     private ArrayList<TableRow>  fromLang1;
     private ArrayList<TableRow>  fromLang2;
     private Date date;
+    private long maxId;
     
     /*************** lang2Name ***************/
     public void setLang2Name(String name){
@@ -71,5 +72,14 @@ public class Dictionary {
     
     public Date getDate(){
         return date;
+    }
+    
+    /*************** maxId ***************/
+    public void setMaxId(long maxId){
+        this.maxId = maxId;
+    }
+    
+    public long getMaxId(){
+        return maxId;
     }
 }

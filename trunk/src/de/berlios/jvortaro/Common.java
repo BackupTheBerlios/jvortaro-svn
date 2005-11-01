@@ -59,7 +59,9 @@ public class Common {
         e.printStackTrace();
     }
 
-    
+    /**
+     * Search for an item in dictionary
+     */
     public ArrayList<TableRow> search(ArrayList<TableRow> data, String filter){
         
         ArrayList<TableRow> result = new ArrayList<TableRow>();
@@ -109,6 +111,9 @@ public class Common {
         return result;
     }
     
+    /**
+     * Search for a string in an array. Used to find "muffins" stored in local computer
+     */
     static public boolean find(String[] dati, String nome){
         boolean trovato = false;
         for (String valore : dati){
@@ -138,6 +143,9 @@ public class Common {
         return handler.getDictionary();
     }    
     
+    /**
+     * Escape data 
+     */
     private String escapeXML(String data){
 
         String result = data.replaceAll("&","&amp;");
@@ -149,6 +157,9 @@ public class Common {
     }
     
     
+    /**
+     * Write one direction of dictionary
+     */
     private void writeDirection(PrintStream ps, String langFrom, String langTo, ArrayList<TableRow> data){
         ps.println(String.format("<direction from=\"%s\" to=\"%s\" >", langFrom, langTo));
         for (TableRow row:data){
@@ -159,6 +170,9 @@ public class Common {
         ps.println("</direction>");
     }
     
+    /**
+     * Write entire dicionary (call writeDirection)
+     */
     public void writeDictionary(Dictionary dict, File file){
         try{
             GZIPOutputStream os = new GZIPOutputStream(new FileOutputStream(file));

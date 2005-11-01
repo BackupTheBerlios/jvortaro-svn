@@ -47,11 +47,13 @@ public class SAXHandler extends DefaultHandler {
     }
 
     public Dictionary getDictionary(){
+        dictionary.setMaxId(id);
         return dictionary;
     }
     
     public void startElement(String str, String str1, String str2, org.xml.sax.Attributes attributes) throws org.xml.sax.SAXException {
        
+        /*************** dictionary ******************/
         if (str2.equalsIgnoreCase("dictionary")){
             dictionary = new Dictionary();
             String name = attributes.getValue("lang");
@@ -71,6 +73,7 @@ public class SAXHandler extends DefaultHandler {
             dictionary.setFromLang2(new ArrayList<TableRow>());
         }
         
+        /*************** direction ******************/
         if (str2.equalsIgnoreCase("direction")){
             String from = attributes.getValue("from");
             if (from.equalsIgnoreCase("esperanto"))
@@ -79,6 +82,7 @@ public class SAXHandler extends DefaultHandler {
                 currentDirection = dictionary.getFromLang2();
         }
         
+        /*************** item ******************/
         if (str2.equalsIgnoreCase("item")){
             String lang1 = attributes.getValue("lang1");
             String lang2 = attributes.getValue("lang2");

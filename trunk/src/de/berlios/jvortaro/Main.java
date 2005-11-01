@@ -40,12 +40,12 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.Timer;
 import javax.swing.UIManager;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import de.berlios.jvortaro.bean.LanguageInformation;
 import de.berlios.jvortaro.bean.TableRow;
 import de.berlios.jvortaro.interfaces.Database;
 import de.berlios.jvortaro.interfaces.Service;
+import java.util.Vector;
 import javax.swing.DefaultCellEditor;
 
 /**
@@ -388,8 +388,8 @@ public class Main extends javax.swing.JFrame {
         ListSelectionModel selectionModel = mainTable.getSelectionModel();
         int max = selectionModel.getMaxSelectionIndex();
 
-        DefaultTableModel model = (DefaultTableModel) mainTable.getModel();
-        model.insertRow(++max, (Object[])null);
+        TableModel model = (TableModel) mainTable.getModel();
+        model.insertRow(++max, new TableRow());
            
     }//GEN-LAST:event_jInsertMenuItemActionPerformed
 
@@ -400,9 +400,10 @@ public class Main extends javax.swing.JFrame {
         int min = selectionModel.getMinSelectionIndex();
         if (min != -1){
             System.out.println("Selecion ["+min+","+max+"]");
-            DefaultTableModel model = (DefaultTableModel) mainTable.getModel();
+            TableModel model = (TableModel) mainTable.getModel();
             for (int i = min; i <= max; i++){
-                System.out.println("Riga "+i);
+                
+                System.out.println("Riga "+i+" id:"+model.getValueAt(i).getId());
                 model.removeRow(min);
             }
         }
@@ -632,8 +633,8 @@ public class Main extends javax.swing.JFrame {
      * Clear field changing language
      */
     private void  resetTableAndTextField(){
-        DefaultTableModel model = (DefaultTableModel)mainTable.getModel();
-        model.setRowCount(0);
+        TableModel model = (TableModel)mainTable.getModel();
+        model.clear();
         jTextField.setText("");
     }
 
@@ -668,14 +669,15 @@ public class Main extends javax.swing.JFrame {
             else
                 table = lang2+"_"+lang1;
             
-            DefaultTableModel model = (DefaultTableModel) mainTable.getModel();
-            model.setRowCount(0);
+            TableModel model = (TableModel) mainTable.getModel();
+            model.clear();
             
             ArrayList<TableRow> data = database.search(jTextField.getText());
             
-            for(TableRow tableRow: data){
-                model.addRow(new String[]{tableRow.getLang1(), tableRow.getLang2()});
-            }
+            model.addRows(data);
+            /*for(TableRow tableRow: data){
+                //model.addRow(new String[]{tableRow.getLang1(), tableRow.getLang2(), tableRow.getId().toString()});
+            }*/
             
             mainTable.setModel(model);
             

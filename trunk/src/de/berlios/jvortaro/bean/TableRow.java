@@ -29,7 +29,7 @@ import java.util.Date;
  *
  * @author enrico
  */
-public class TableRow {
+public class TableRow  {
     
     private String lang1;
     private String lang2;
@@ -71,5 +71,5 @@ public class TableRow {
     public Date getTimestamp(){
         return timestamp;
     }
-   
+  
 }
