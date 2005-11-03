@@ -32,6 +32,8 @@ import java.util.Date;
  */
 public class Dictionary {
     
+    public enum Direction {FROM_ESPERANTO, TO_ESPERANTO, UNSPECIFIED};
+    
     private String lang2Name;
     private ArrayList<TableRow>  fromLang1;
     private ArrayList<TableRow>  fromLang2;
@@ -81,5 +83,13 @@ public class Dictionary {
     
     public long getMaxId(){
         return maxId;
+    }
+    
+    public TableRow updateRow(Direction direction, TableRow newRow, TableRow oldRow){
+        if (direction == Direction.UNSPECIFIED){
+            System.err.println("Direzione non specificata");
+            return null;
+        }
+        return null;
     }
 }

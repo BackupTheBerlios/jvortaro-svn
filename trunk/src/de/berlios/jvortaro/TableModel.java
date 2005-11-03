@@ -41,6 +41,7 @@ public class TableModel extends AbstractTableModel {
     private String[] header = new String [] {"Lingvo 1", "Lingvo 2"};
     private ArrayList<TableRow> data = new ArrayList<TableRow>();
     private Dictionary dictionary = null;
+    private Dictionary.Direction direction = Dictionary.Direction.UNSPECIFIED;
     
     public TableModel() {
         super();
@@ -99,8 +100,8 @@ public class TableModel extends AbstractTableModel {
     }
     
     public void removeRow(int row){
-        
-        // warn dict ....
+
+        dictionary.updateRow(direction, getValueAt(row), null);
         data.remove(row);
     }
     
@@ -113,16 +114,29 @@ public class TableModel extends AbstractTableModel {
     public void setValueAt(Object o, int row, int column){
         
         // warn dict, insert new row from returned by dict
+        dictionary.updateRow(direction, getValueAt(row), null);
         String value = (String)o;
+        TableRow oldRow = getValueAt(row);
+        TableRow newRow = oldRow.clone();
         if (column == 0)
-            getValueAt(row).setLang1(value);
+            newRow.setLang1(value);
         else
-            getValueAt(row).setLang2(value);
+            newRow.setLang2(value);
+        
+        dictionary.updateRow(direction, newRow, oldRow);
         fireTableRowsUpdated(row,row);
     }
     
     public void setDictionary(Dictionary dict){
-        this.dictionary = dict
+        this.dictionary = dict;
+    } 
+    
+    public void setDirection(Dictionary.Direction direction){
+        this.direction = direction;
+    }
+    
+    public Dictionary.Direction getDirection(){
+        return direction;
     }
     
 }

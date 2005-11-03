@@ -29,7 +29,7 @@ import java.util.Date;
  *
  * @author enrico
  */
-public class TableRow  {
+public class TableRow  implements Cloneable{
     
     private String lang1;
     private String lang2;
@@ -72,4 +72,13 @@ public class TableRow  {
         return timestamp;
     }
   
+    public TableRow clone(){
+        Object o = null;
+        try {
+            o = super.clone();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return (TableRow)o;
+    }
 }
