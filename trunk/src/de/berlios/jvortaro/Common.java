@@ -71,7 +71,7 @@ public class Common {
         boolean found = false;
         
         while (!found){
-            int i = Collections.binarySearch(data,row, new Compare());
+            int i = Collections.binarySearch(data,row, new CompareSearch());
             
             if (i>=0){
 
@@ -161,6 +161,9 @@ public class Common {
      * Write one direction of dictionary
      */
     private void writeDirection(PrintStream ps, String langFrom, String langTo, ArrayList<TableRow> data){
+        
+        Collections.sort(data,  new Compare() );
+        
         ps.println(String.format("<direction from=\"%s\" to=\"%s\" >", langFrom, langTo));
         for (TableRow row:data){
             String lang1 = escapeXML(row.getLang1());
@@ -183,9 +186,9 @@ public class Common {
             String sDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(dict.getDate());
             
             if (lang != null)
-                ps.println(String.format("<dictionary lang=\"%s\" date=\"%s\" xmlns=\"http://jVortaro.berlios.ds/ns\""+
-            "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""+
-            "xsi:schemaLocation=\"http://jVortaro.berlios.ds/ns http://jVortaro.berlios.de/ns/vortaro-dict.xsd\">",lang,sDate));
+                ps.println(String.format("<dictionary lang=\"%s\" date=\"%s\" xmlns=\"http://jVortaro.berlios.ds/ns\" "+
+            "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "+
+            "xsi:schemaLocation=\"http://jVortaro.berlios.ds/ns http://jVortaro.berlios.de/ns/vortaro-dict.xsd\" >",lang,sDate));
             else
                 ps.println("<dictionary>");
 	    
@@ -207,6 +210,22 @@ class Compare implements Comparator<TableRow> {
         
         String lang1 = a.getLang1();
         String lang2 = b.getLang1();
+        if (lang1 == null)
+            return -1;
+        if (lang2 == null)
+            return 1;
+        return lang1.compareToIgnoreCase(lang2);
+    }
+    
+}
+ 
+
+class CompareSearch implements Comparator<TableRow> {
+    
+    public int compare(TableRow a, TableRow b){
+        
+        String lang1 = a.getLang1();
+        String lang2 = b.getLang1();
         
         if (lang1 == null)
             return -1;
@@ -218,13 +237,13 @@ class Compare implements Comparator<TableRow> {
             lang2 = a.getLang1();
             factor = -1;
         }
-        System.out.print(lang1+" "+lang2+" ");
+        //System.out.print(lang1+" "+lang2+" ");
         lang1 = lang1.substring(0, lang1.length()-1);
         int reduction = lang1.length() < lang2.length() ? lang1.length() : lang2.length();
 
         String temp1 = lang1;
         String temp2 = lang2.substring(0, reduction);
-        System.out.println(temp1+" "+temp2+" "+factor);
+        //System.out.println(temp1+" "+temp2+" "+factor);
         return factor * temp1.compareToIgnoreCase(temp2);
         
     }   

@@ -85,10 +85,19 @@ public class Dictionary {
         return maxId;
     }
     
+    private void remove(Direction direction, TableRow row){
+        
+    }
+    
     public TableRow updateRow(Direction direction, TableRow newRow, TableRow oldRow){
         if (direction == Direction.UNSPECIFIED){
             System.err.println("Direzione non specificata");
             return null;
+        }
+        if (newRow == null){
+            remove(direction, oldRow);
+        } else {
+            //update(direction, )
         }
         return null;
     }

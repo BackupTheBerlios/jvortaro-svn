@@ -101,7 +101,7 @@ public class TableModel extends AbstractTableModel {
     
     public void removeRow(int row){
 
-        dictionary.updateRow(direction, getValueAt(row), null);
+        dictionary.updateRow(direction, null, getValueAt(row));
         data.remove(row);
     }
     

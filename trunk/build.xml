@@ -16,7 +16,7 @@
       <property file="nbproject/project.properties"/>
       <echo message="Creazione dizionari ${jvortaro.importDatabase}"/> 
       <mkdir dir="${jnlp.dir}" />
-      <java classname="jvortaro.Convert"  fork="yes" >
+      <java classname="de.berlios.jvortaro.Convert"  fork="yes" >
          <classpath>
            <pathelement location="${dist.dir}/jVortaro.jar"/>
          </classpath>

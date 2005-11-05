@@ -25,6 +25,8 @@ package de.berlios.jvortaro;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import de.berlios.jvortaro.bean.Dictionary;
 import de.berlios.jvortaro.bean.TableRow;
