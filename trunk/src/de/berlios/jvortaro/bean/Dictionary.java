@@ -23,7 +23,9 @@
 
 package de.berlios.jvortaro.bean;
 
+import de.berlios.jvortaro.Common;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 /**
@@ -85,19 +87,36 @@ public class Dictionary {
         return maxId;
     }
     
-    private void remove(Direction direction, TableRow row){
-        
-    }
-    
-    public TableRow updateRow(Direction direction, TableRow newRow, TableRow oldRow){
+   public TableRow updateRow(Direction direction, TableRow newRow, TableRow oldRow){
         if (direction == Direction.UNSPECIFIED){
-            System.err.println("Direzione non specificata");
+            System.err.println("Unspecified direction");
             return null;
         }
+
+        ArrayList<TableRow> dict;
+         if (direction == Direction.FROM_ESPERANTO)
+             dict = fromLang1;
+         else
+             dict = fromLang2;
+
+        
+        
         if (newRow == null){
-            remove(direction, oldRow);
+             if (!dict.remove(oldRow))
+                System.err.println("Removing not existent item");
         } else {
-            //update(direction, )
+             int index;
+             if (oldRow != null){
+                 index = dict.indexOf(oldRow);
+                 if (index < 0){
+                     System.err.println("Removing not existent item");
+                     return null;
+                 }
+              dict.set(index,newRow);
+             } else 
+                dict.add(newRow);
+             Common common = new Common();
+             common.sort(dict);
         }
         return null;
     }

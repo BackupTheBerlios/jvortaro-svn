@@ -22,6 +22,7 @@
 */
 
 package de.berlios.jvortaro.interfaces;
+import de.berlios.jvortaro.bean.Dictionary;
 import java.util.ArrayList;
 import de.berlios.jvortaro.bean.LanguageInformation;
 import de.berlios.jvortaro.bean.TableRow;
@@ -45,4 +46,7 @@ public interface Database {
   
   /** import items */
   void importLanguages (ArrayList<TableRow> dati,String langForm, String langTo, boolean isChached) throws Exception;
+  
+  /** database */
+  Dictionary getDictionary();
 }

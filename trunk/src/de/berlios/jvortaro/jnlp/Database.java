@@ -52,7 +52,7 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
     
     private String langTo = null;
     private String langFrom = null;
-    private Dictionary dic;
+    private Dictionary dictionary;
     ArrayList<TableRow> data = null;
     
     public void changeLanguage(String from, String to) {
@@ -65,9 +65,9 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
             langFrom = from;
             
             if (langFrom.equalsIgnoreCase("esperanto"))
-                data = dic.getFromLang1();
+                data = dictionary.getFromLang1();
             else
-                data = dic.getFromLang2();
+                data = dictionary.getFromLang2();
             
             return;
         }
@@ -104,9 +104,9 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
                 nuovo = false;
                 FileContents fc = ps.get(url);
                 Common c = new Common();
-                dic = c.readXmlDatabase(new GZIPInputStream(fc.getInputStream()));
+                dictionary = c.readXmlDatabase(new GZIPInputStream(fc.getInputStream()));
                 
-                System.out.println("Local copy date "+dic.getDate());
+                System.out.println("Local copy date "+dictionary.getDate());
                 ArrayList<LanguageInformation> li = getLanguagesAvailable();
                 
                 LanguageInformation language = null;
@@ -122,7 +122,7 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
                 }
                 
                 System.out.println("Remote copy "+language.getLastChangeRemote());
-                if (dic.getDate().compareTo(language.getLastChangeRemote()) >=0){
+                if (dictionary.getDate().compareTo(language.getLastChangeRemote()) >=0){
                     System.out.println("There is a copy and it's up-to-date");
                     download = false;
                 }
@@ -166,17 +166,17 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
                 os.write(buffer);
                 os.close();
                 Common c = new Common();
-                dic = c.readXmlDatabase(new GZIPInputStream(fc.getInputStream()));
-                properties.setProperty(database+".data", Long.toString(dic.getDate().getTime()));
+                dictionary = c.readXmlDatabase(new GZIPInputStream(fc.getInputStream()));
+                properties.setProperty(database+".data", Long.toString(dictionary.getDate().getTime()));
             }
             
             FileContents fc = ps.get(url);
             
             
             if (langFrom.equalsIgnoreCase("esperanto"))
-                data = dic.getFromLang1();
+                data = dictionary.getFromLang1();
             else
-                data = dic.getFromLang2();
+                data = dictionary.getFromLang2();
             
         } catch(Exception e){
             e.printStackTrace();
@@ -230,6 +230,10 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
         Common common = new Common();
         result = common.search(data,filter);
         return result;
+    }
+
+    public Dictionary getDictionary() {
+        return dictionary;
     }
     
 }

@@ -43,7 +43,7 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
     private String langFrom;
     private String langTo;
     private String userDir;
-    private Dictionary dic;
+    private Dictionary dictionary;
     
     ArrayList<TableRow> data = null;
     
@@ -92,9 +92,9 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
             langTo = to;
             langFrom = from;
             if (langFrom.equalsIgnoreCase("esperanto"))
-                data = dic.getFromLang1();
+                data = dictionary.getFromLang1();
             else
-                data = dic.getFromLang2();
+                data = dictionary.getFromLang2();
             return;
         }
         langTo = to;
@@ -104,15 +104,19 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
             File file = new File(userDir+"/"+name+".vortaro");
             
             Common c = new Common();
-            dic = c.readXmlDatabase(new GZIPInputStream(new FileInputStream(file)));
+            dictionary = c.readXmlDatabase(new GZIPInputStream(new FileInputStream(file)));
             if (langFrom.equalsIgnoreCase("esperanto"))
-                data = dic.getFromLang1();
+                data = dictionary.getFromLang1();
             else
-                data = dic.getFromLang2();
+                data = dictionary.getFromLang2();
             
         } catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    public Dictionary getDictionary() {
+        return dictionary;
     }
     
 }

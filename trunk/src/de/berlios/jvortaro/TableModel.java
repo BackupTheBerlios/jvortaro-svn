@@ -108,13 +108,14 @@ public class TableModel extends AbstractTableModel {
     public void insertRow(int row, TableRow data){
         
         this.data.add(row,data);
+        dictionary.updateRow(direction, data, null);
         fireTableRowsInserted(row,row);
     }
     
     public void setValueAt(Object o, int row, int column){
         
         // warn dict, insert new row from returned by dict
-        dictionary.updateRow(direction, getValueAt(row), null);
+        
         String value = (String)o;
         TableRow oldRow = getValueAt(row);
         TableRow newRow = oldRow.clone();
@@ -124,6 +125,7 @@ public class TableModel extends AbstractTableModel {
             newRow.setLang2(value);
         
         dictionary.updateRow(direction, newRow, oldRow);
+        data.set(row, newRow);
         fireTableRowsUpdated(row,row);
     }
     

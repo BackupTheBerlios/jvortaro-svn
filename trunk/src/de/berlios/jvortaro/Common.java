@@ -162,7 +162,7 @@ public class Common {
      */
     private void writeDirection(PrintStream ps, String langFrom, String langTo, ArrayList<TableRow> data){
         
-        Collections.sort(data,  new Compare() );
+        Collections.sort(data,  new ItemCompare() );
         
         ps.println(String.format("<direction from=\"%s\" to=\"%s\" >", langFrom, langTo));
         for (TableRow row:data){
@@ -202,9 +202,15 @@ public class Common {
             e.printStackTrace();
         }
     }
+    
+    public void sort(ArrayList<TableRow> data){
+        Collections.sort(data, new ItemCompare());
+    }
+    
 }
 
-class Compare implements Comparator<TableRow> {
+
+class ItemCompare implements Comparator<TableRow> {
     
     public int compare(TableRow a, TableRow b){
         

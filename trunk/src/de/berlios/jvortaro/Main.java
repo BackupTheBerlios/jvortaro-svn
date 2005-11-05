@@ -23,6 +23,7 @@
 
 package de.berlios.jvortaro;
 
+import de.berlios.jvortaro.bean.Dictionary;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -664,20 +665,23 @@ public class Main extends javax.swing.JFrame {
             String lang1 = jLang1Radio.getText();
             String lang2 = jLang2Radio.getText();
             String table;
-            if (jLang1Radio.isSelected())
+            Dictionary.Direction direction;
+            if (jLang1Radio.isSelected()){
                 table = lang1+"_"+lang2;
-            else
+                direction = Dictionary.Direction.FROM_ESPERANTO;
+            }else{
                 table = lang2+"_"+lang1;
-            
+                direction = Dictionary.Direction.TO_ESPERANTO;
+            }
             TableModel model = (TableModel) mainTable.getModel();
             model.clear();
             
             ArrayList<TableRow> data = database.search(jTextField.getText());
             
             model.addRows(data);
-            /*for(TableRow tableRow: data){
-                //model.addRow(new String[]{tableRow.getLang1(), tableRow.getLang2(), tableRow.getId().toString()});
-            }*/
+            model.setDictionary(database.getDictionary());
+            
+            model.setDirection(direction);
             
             mainTable.setModel(model);
             
