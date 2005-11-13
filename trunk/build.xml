@@ -12,7 +12,7 @@
       </classpath>
     </taskdef>
     
-    <target name="convert" depends="jar">
+    <target name="convert" depends="jar" description="Convert dictionary from la-vortaro.net">
       <property file="nbproject/project.properties"/>
       <echo message="Creazione dizionari ${jvortaro.importDatabase}"/> 
       <mkdir dir="${jnlp.dir}" />
@@ -25,7 +25,7 @@
 
     <target name="prepareUpdate" depends="static,language.jar" description="Prepare for remote update"/>
 
-    <target name="static">
+    <target name="static" description="Create static file">
       <property file="nbproject/project.properties"/>
 
       <mkdir dir="${jnlp.dir}" />
@@ -40,7 +40,7 @@
 
     </target>
 
-    <target name="language.jar" depends="jar">
+    <target name="language.jar" depends="jar" description="Create languages.jar">
       <property file="nbproject/project.properties"/>
     
       <java classname="de.berlios.jvortaro.Export"  fork="yes">
@@ -54,7 +54,7 @@
         </fileset>
       </jar>
       <delete>
-       <fileset dir="${jnlp.dir}" includes="*.properties" />
+       <!--fileset dir="${jnlp.dir}" includes="*.properties" /-->
       </delete>
     </target>
     
