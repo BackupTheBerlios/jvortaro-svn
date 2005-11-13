@@ -35,6 +35,7 @@ import java.util.Properties;
 import java.util.zip.GZIPInputStream;
 import de.berlios.jvortaro.bean.Dictionary;
 import de.berlios.jvortaro.standalone.Service;
+import java.util.Locale;
 
 /**
  * 
@@ -57,6 +58,7 @@ public class Export {
             ArrayList<String> languageName = new ArrayList<String>();
             Common c = new Common();
             String d ="";
+            Arrays.sort(files);
             for (String f: files){
                 if (f.endsWith(".vortaro")){
                     File file = new File(directory+"/"+f);
@@ -64,7 +66,7 @@ public class Export {
                     System.out.println("Reading "+f);
                     Dictionary dict = c.readXmlDatabase(new GZIPInputStream(new FileInputStream(file)));
                     long length = file.length();
-                    d += String.format("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%tD</td></tr>",
+                    d += String.format(Locale.ENGLISH,"<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%te %5$tB %5$tY</td></tr>\n",
                             f,dict.getFromLang1().size(),dict.getFromLang2().size(), length,dict.getDate()); 
                     dict.setFromLang1(null);
                     dict.setFromLang2(null);
