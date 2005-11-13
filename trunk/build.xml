@@ -54,7 +54,7 @@
         </fileset>
       </jar>
       <delete>
-       <!--fileset dir="${jnlp.dir}" includes="*.properties" /-->
+       <fileset dir="${jnlp.dir}" includes="*.properties" />
       </delete>
     </target>
     
