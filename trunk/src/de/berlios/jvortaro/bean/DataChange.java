@@ -30,6 +30,8 @@ package de.berlios.jvortaro.bean;
 public class DataChange {
     
     public enum State {DELETE, INSERT};
+    public Dictionary.Direction direction;
+    public TableRow row;
     private State state;
     
     /********** state *********/
@@ -40,4 +42,23 @@ public class DataChange {
     public State getState(){
         return state;
     }
+    
+    /********** direction *********/
+    public void setDirection (Dictionary.Direction state){
+        this.direction = direction;
+    }
+    
+    public Dictionary.Direction getDirection(){
+        return direction;
+    }
+    
+    /********** row *********/
+    public void setRow (TableRow row){
+        this.row = row;
+    }
+    
+    public TableRow getRow(){
+        return row;
+    }
+    
 }

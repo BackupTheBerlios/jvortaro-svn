@@ -39,6 +39,7 @@ public class Dictionary {
     private String lang2Name;
     private ArrayList<TableRow>  fromLang1;
     private ArrayList<TableRow>  fromLang2;
+    private ArrayList<DataChange> changes = new ArrayList<DataChange>();
     private Date date;
     private long maxId;
     
@@ -89,7 +90,7 @@ public class Dictionary {
     
    public TableRow updateRow(Direction direction, TableRow newRow, TableRow oldRow){
         if (direction == Direction.UNSPECIFIED){
-            System.err.println("Unspecified direction");
+            System.err.println("Direction unspecified ");
             return null;
         }
 
@@ -99,25 +100,47 @@ public class Dictionary {
          else
              dict = fromLang2;
 
+        DataChange dataChange = new DataChange();
+        dataChange.setDirection(direction);
         
-        
-        if (newRow == null){
+        if (newRow == null){ // remove
              if (!dict.remove(oldRow))
                 System.err.println("Removing not existent item");
-        } else {
+             else {
+                 dataChange.setRow(oldRow.clone());
+                 dataChange.setState(DataChange.State.DELETE);
+             }
+        } else { 
              int index;
-             if (oldRow != null){
+             if (oldRow != null){ // update
                  index = dict.indexOf(oldRow);
                  if (index < 0){
                      System.err.println("Removing not existent item");
                      return null;
-                 }
+                 } else {
+                     dataChange.setRow(oldRow.clone());
+                     dataChange.setState(DataChange.State.DELETE);
+                   }
               dict.set(index,newRow);
-             } else 
+             } else { // insert
                 dict.add(newRow);
+                newRow.setId(-1);
+             }
+             if (dataChange.getRow() != null)
+                 changes.add(dataChange);
+             
+             dataChange = new DataChange();
+             dataChange.setRow(newRow.clone());
+             dataChange.setState(DataChange.State.INSERT);
+             changes.add(dataChange);
+             
              Common common = new Common();
              common.sort(dict);
         }
         return null;
     }
+   
+   public void normailizaChanges(){
+       
+   }
 }
