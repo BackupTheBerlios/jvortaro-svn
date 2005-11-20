@@ -22,8 +22,8 @@
  */
 
 package de.berlios.jvortaro.bean;
-
 import java.util.Date;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -39,6 +39,18 @@ public class LanguageInformation {
     private int databaseSize;
     private Date lastChangeLocal;
     private Date lastChangeRemote;
+    
+    private static ImageIcon okIcon;
+    private static ImageIcon badIcon;
+    private static ImageIcon updateIcon;
+    private static ImageIcon saveIcon;        
+    
+    static {
+        okIcon = createImageIcon("/ok.png");
+        badIcon = createImageIcon("/cancel.png");
+        updateIcon = createImageIcon("/update.png");
+        saveIcon = createImageIcon("/save.png");
+    }
     
     /********** Name **************/
     public void setName(String name){
@@ -112,4 +124,33 @@ public class LanguageInformation {
         return lastChangeRemote;
     }
     
+    /**** methods used by about dialog box in order to display information ****/
+    
+    /**
+      * Read an icon from file
+      **/
+    public static ImageIcon createImageIcon(String path) {
+            java.net.URL imgURL = LanguageInformation.class.getResource(path);
+            if (imgURL != null) {
+                    return new ImageIcon(imgURL);
+            } else {
+                    System.err.println("Couldn't find file: " + path);
+                    return null;
+            }
+    }
+
+    public ImageIcon getUpdateIcon(){
+        //return okIcon;
+        return null;
+    }
+    
+    public ImageIcon getModificationIcon(){
+        //return saveIcon;
+        return null;
+    }
+    
+    public String getStatistic(){
+        return getFromEsperantoNumber()+"/"+getFromLanguageNumber();
+    }
+        
 }

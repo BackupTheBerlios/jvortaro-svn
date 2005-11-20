@@ -23,16 +23,108 @@
 
 package de.berlios.jvortaro;
 
+import de.berlios.jvortaro.bean.LanguageInformation;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import javax.swing.ImageIcon;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
+
+
+
 /**
  *
  * @author  enrico
  */
 public class About extends javax.swing.JDialog {
     
+    
+    class TableModel extends AbstractTableModel{
+        ArrayList<LanguageInformation> data = new ArrayList<LanguageInformation>();
+        
+        Class[] types = new Class [] {
+                    ImageIcon.class, 
+                    ImageIcon.class, 
+                    java.lang.String.class, 
+                    java.lang.String.class, 
+                    java.lang.String.class
+        };
+        
+        String[] header = {null,null, "Name", "Words count", "Date"};
+
+        
+        void setData(ArrayList<LanguageInformation> data){
+            this.data = data;
+        }
+        
+        ArrayList<LanguageInformation> getData(){
+            return data;
+        }
+        
+        public Class getColumnClass(int columnIndex) {
+            return types [columnIndex];
+        }
+
+        public Object getValueAt(int row, int column) {
+            LanguageInformation li  = data.get(row);
+            switch (column) {
+                case 0: return li.getUpdateIcon();
+                case 1: return li.getModificationIcon();
+                case 2: return li.getName();
+                case 3: return li.getStatistic();
+                default: return "";
+            }
+        }
+
+        public int getColumnCount() {
+            return types.length;
+        }
+
+        public int getRowCount() {
+            return data.size();
+        }
+
+        public String getColumnName(int index) {
+            return header[index];
+        }
+        
+    }    
+
+    
+    Main main;
+    
     /** Creates new form About */
     public About(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
+        main = (Main) parent;
+        jDictionaryTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        ListSelectionModel rowSM = jDictionaryTable.getSelectionModel();
+        rowSM.addListSelectionListener(new ListSelectionListener() {
+        public void valueChanged(ListSelectionEvent e) {
+            //Ignore extra messages.
+            if (e.getValueIsAdjusting()) return;
+
+            ListSelectionModel lsm =
+                (ListSelectionModel)e.getSource();
+            if (lsm.isSelectionEmpty()) {
+                
+            } else {
+                int selectedRow = lsm.getMinSelectionIndex();
+                updateLowerPanel(selectedRow);
+            }
+        }
+        });
+    }
+    
+    void updateLowerPanel(int index){
+        LanguageInformation li = ((TableModel)jDictionaryTable.getModel()).getData().get(index);
+        jLabelName.setText(li.getName());
     }
     
     /** This method is called from within the constructor to
@@ -44,27 +136,40 @@ public class About extends javax.swing.JDialog {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jButton1 = new javax.swing.JButton();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jDictionaryTable = new javax.swing.JTable();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabelDate = new javax.swing.JLabel();
+        jLabelNumber = new javax.swing.JLabel();
+        jLabelUpdateStatus = new javax.swing.JLabel();
+        jLabelName = new javax.swing.JLabel();
+        jLabelState = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
+        jLabelThanks = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jLabel2 = new javax.swing.JLabel();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         setTitle("About");
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon.png")));
-        jLabel1.setText("<html><font size=\"+2\">jVortaro 0.5</font> <br>(C) 2005 Enrico Fracasso</html>");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(10, 2, 7, 2);
-        getContentPane().add(jLabel1, gridBagConstraints);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
         getContentPane().add(jSeparator1, gridBagConstraints);
 
@@ -77,10 +182,157 @@ public class About extends javax.swing.JDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         getContentPane().add(jButton1, gridBagConstraints);
+
+        jPanel2.setLayout(new java.awt.GridBagLayout());
+
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(30, 30));
+        jDictionaryTable.setModel(new About.TableModel());
+        jScrollPane2.setViewportView(jDictionaryTable);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanel2.add(jScrollPane2, gridBagConstraints);
+
+        jPanel3.setLayout(new java.awt.GridBagLayout());
+
+        jLabel3.setText("Nome:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        jPanel3.add(jLabel3, gridBagConstraints);
+
+        jLabel4.setText("Date:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        jPanel3.add(jLabel4, gridBagConstraints);
+
+        jLabel5.setText("Number:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        jPanel3.add(jLabel5, gridBagConstraints);
+
+        jLabel6.setText("Update date:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        jPanel3.add(jLabel6, gridBagConstraints);
+
+        jLabel7.setText("Stato:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        jPanel3.add(jLabel7, gridBagConstraints);
+
+        jLabelDate.setText("(none)");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        jPanel3.add(jLabelDate, gridBagConstraints);
+
+        jLabelNumber.setText("(none)");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        jPanel3.add(jLabelNumber, gridBagConstraints);
+
+        jLabelUpdateStatus.setText("(none)");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        jPanel3.add(jLabelUpdateStatus, gridBagConstraints);
+
+        jLabelName.setText("(none)");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        jPanel3.add(jLabelName, gridBagConstraints);
+
+        jLabelState.setText("(none)");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        jPanel3.add(jLabelState, gridBagConstraints);
+
+        jButton2.setText("Aggiorna");
+        jButton2.setEnabled(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        jPanel3.add(jButton2, gridBagConstraints);
+
+        jButton3.setText("Salva...");
+        jButton3.setEnabled(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        jPanel3.add(jButton3, gridBagConstraints);
+
+        jLabel13.setText("Thanks:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        jPanel3.add(jLabel13, gridBagConstraints);
+
+        jLabelThanks.setText("(none)");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        jPanel3.add(jLabelThanks, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        jPanel2.add(jPanel3, gridBagConstraints);
+
+        jTabbedPane1.addTab("Vortarioj", jPanel2);
+
+        jPanel1.setLayout(new java.awt.GridBagLayout());
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon.png")));
+        jLabel1.setText("<html><font size=\"+2\">jVortaro 0.5</font> <br>(C) 2005 Enrico Fracasso</html>");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(10, 2, 7, 2);
+        jPanel1.add(jLabel1, gridBagConstraints);
 
         jLabel2.setText("<html>\nThis program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.<br><br>\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.<br><br>\n\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n</html>");
         jLabel2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -98,7 +350,15 @@ public class About extends javax.swing.JDialog {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 3, 0, 3);
-        getContentPane().add(jScrollPane1, gridBagConstraints);
+        jPanel1.add(jScrollPane1, gridBagConstraints);
+
+        jTabbedPane1.addTab("Koncerne", jPanel1);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        getContentPane().add(jTabbedPane1, gridBagConstraints);
 
         pack();
     }
@@ -110,10 +370,62 @@ public class About extends javax.swing.JDialog {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JTable jDictionaryTable;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabelDate;
+    private javax.swing.JLabel jLabelName;
+    private javax.swing.JLabel jLabelNumber;
+    private javax.swing.JLabel jLabelState;
+    private javax.swing.JLabel jLabelThanks;
+    private javax.swing.JLabel jLabelUpdateStatus;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
-    
+
+    public void updateDictionaryList(){
+        try {
+            ArrayList<LanguageInformation> li = main.getDatabase().getLanguagesAvailable();
+            Collections.sort(li, new CompareLanguageInformation());
+            ((About.TableModel)jDictionaryTable.getModel()).setData(li);
+            
+            for (int i = 0; i<2; i++) {
+                int width = 25;
+                TableColumn col = jDictionaryTable.getColumnModel().getColumn(i);
+                col.setMinWidth(width);
+                col.setMaxWidth(width);
+                col.setPreferredWidth(width);
+            }
+            
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 }
+
+
+class CompareLanguageInformation  implements  Comparator<LanguageInformation> {
+    public int compare(LanguageInformation lang1, LanguageInformation lang2) {
+        return lang1.getName().compareTo(lang2.getName());
+    }
+
+}
+    
+    
+   
+
+
+

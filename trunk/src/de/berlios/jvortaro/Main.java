@@ -433,6 +433,7 @@ public class Main extends javax.swing.JFrame {
     private void jButtonAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAboutActionPerformed
 
         About about = new About(this,true);
+        about.updateDictionaryList();
         about.setVisible(true);
     }//GEN-LAST:event_jButtonAboutActionPerformed
             
@@ -770,6 +771,14 @@ public class Main extends javax.swing.JFrame {
             }
         });
     }
+    
+    public Database getDatabase(){
+        return database;
+    } 
+     
+    public Service getService(){
+        return service;
+    } 
     
     /**
      * Update status bar
