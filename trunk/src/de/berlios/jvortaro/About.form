@@ -159,7 +159,7 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabelUpdateStatus">
+                <Component class="javax.swing.JLabel" name="jLabelUpdateDate">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="(none)"/>
                   </Properties>

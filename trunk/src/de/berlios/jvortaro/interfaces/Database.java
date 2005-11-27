@@ -33,7 +33,7 @@ import de.berlios.jvortaro.bean.TableRow;
  */
 public interface Database {
   /** return list of available languages **/
-  ArrayList<LanguageInformation> getLanguagesAvailable() throws Exception;
+  ArrayList<LanguageInformation> getLanguagesInformation() throws Exception;
   
   /** search for a word in database */
   ArrayList<TableRow> search(String valore) throws Exception;

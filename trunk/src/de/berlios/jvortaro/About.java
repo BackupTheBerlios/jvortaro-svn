@@ -125,6 +125,11 @@ public class About extends javax.swing.JDialog {
     void updateLowerPanel(int index){
         LanguageInformation li = ((TableModel)jDictionaryTable.getModel()).getData().get(index);
         jLabelName.setText(li.getName());
+        jLabelDate.setText(li.getLastChangeRemote().toString());
+        jLabelNumber.setText("");
+        jLabelUpdateDate.setText("");
+        jLabelState.setText("");
+        jLabelThanks.setText("");
     }
     
     /** This method is called from within the constructor to
@@ -150,7 +155,7 @@ public class About extends javax.swing.JDialog {
         jLabel7 = new javax.swing.JLabel();
         jLabelDate = new javax.swing.JLabel();
         jLabelNumber = new javax.swing.JLabel();
-        jLabelUpdateStatus = new javax.swing.JLabel();
+        jLabelUpdateDate = new javax.swing.JLabel();
         jLabelName = new javax.swing.JLabel();
         jLabelState = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
@@ -258,14 +263,14 @@ public class About extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
         jPanel3.add(jLabelNumber, gridBagConstraints);
 
-        jLabelUpdateStatus.setText("(none)");
+        jLabelUpdateDate.setText("(none)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        jPanel3.add(jLabelUpdateStatus, gridBagConstraints);
+        jPanel3.add(jLabelUpdateDate, gridBagConstraints);
 
         jLabelName.setText("(none)");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -386,7 +391,7 @@ public class About extends javax.swing.JDialog {
     private javax.swing.JLabel jLabelNumber;
     private javax.swing.JLabel jLabelState;
     private javax.swing.JLabel jLabelThanks;
-    private javax.swing.JLabel jLabelUpdateStatus;
+    private javax.swing.JLabel jLabelUpdateDate;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -398,7 +403,7 @@ public class About extends javax.swing.JDialog {
 
     public void updateDictionaryList(){
         try {
-            ArrayList<LanguageInformation> li = main.getDatabase().getLanguagesAvailable();
+            ArrayList<LanguageInformation> li = main.getDatabase().getLanguagesInformation();
             Collections.sort(li, new CompareLanguageInformation());
             ((About.TableModel)jDictionaryTable.getModel()).setData(li);
             

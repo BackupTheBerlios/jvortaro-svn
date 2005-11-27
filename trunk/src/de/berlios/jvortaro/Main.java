@@ -614,7 +614,7 @@ public class Main extends javax.swing.JFrame {
      */
     private ComboBoxModel getLanguagesAvailable() throws Exception{
         
-        languages = database.getLanguagesAvailable();
+        languages = database.getLanguagesInformation();
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         
         ArrayList<String> names = new ArrayList<String>();

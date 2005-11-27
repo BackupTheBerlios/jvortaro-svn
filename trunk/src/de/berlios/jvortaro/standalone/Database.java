@@ -52,7 +52,7 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
         userDir = service.getUserDirectory();
     }
     
-     public  ArrayList<LanguageInformation> getLanguagesAvailable() throws Exception {
+     public  ArrayList<LanguageInformation> getLanguagesInformation() throws Exception {
         
         ArrayList<LanguageInformation> result = new ArrayList<LanguageInformation>();
         File dir = new File(userDir);

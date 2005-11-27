@@ -107,7 +107,7 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
                 dictionary = c.readXmlDatabase(new GZIPInputStream(fc.getInputStream()));
                 
                 System.out.println("Local copy date "+dictionary.getDate());
-                ArrayList<LanguageInformation> li = getLanguagesAvailable();
+                ArrayList<LanguageInformation> li = getLanguagesInformation();
                 
                 LanguageInformation language = null;
                 for (LanguageInformation l: li){
@@ -117,7 +117,7 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
                     }
                 }
                 if (language == null){
-                    System.out.println("Not found database?");
+                    System.out.println("Database not found?");
                     return;
                 }
                 
@@ -189,7 +189,7 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
         
     }
     
-    public ArrayList<LanguageInformation> getLanguagesAvailable() throws Exception {
+    public ArrayList<LanguageInformation> getLanguagesInformation() throws Exception {
         ArrayList<LanguageInformation> result = new ArrayList<LanguageInformation>();
         Properties properties = new Properties();
         try{
