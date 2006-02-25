@@ -36,4 +36,6 @@ public interface Service {
     String getClipboard();
     void saveProperties(Properties pref) throws Exception;
     Properties loadProperties() throws Exception;
+    boolean isPropertiesFileOld() throws Exception;
+    void updatePropertiesFiles() throws Exception;
 }

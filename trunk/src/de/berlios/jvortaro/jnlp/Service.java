@@ -118,4 +118,15 @@ public class Service implements de.berlios.jvortaro.interfaces.Service {
             Common.showError(e);
         } 
    }
+    
+   /** 
+    * in JNLP context, properties file is always up2date
+    */
+   public boolean isPropertiesFileOld() throws Exception {
+       return false;
+   }
+   
+   public void updatePropertiesFiles() throws Exception{
+       
+   }
 }

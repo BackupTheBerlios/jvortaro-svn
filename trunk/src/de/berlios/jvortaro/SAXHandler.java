@@ -58,6 +58,7 @@ public class SAXHandler extends DefaultHandler {
             dictionary = new Dictionary();
             String name = attributes.getValue("lang");
             String sDate = attributes.getValue("date");
+            String credits = attributes.getValue("credits");
             Date date;
             try {
                 date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").parse(sDate);
@@ -66,6 +67,7 @@ public class SAXHandler extends DefaultHandler {
                 date = new Date(System.currentTimeMillis());
             }
             dictionary.setDate(date);
+            dictionary.setCredits(credits!=null?credits:"");
             System.out.println(name);
             if (name != null)
                 dictionary.setLang2Name(name);

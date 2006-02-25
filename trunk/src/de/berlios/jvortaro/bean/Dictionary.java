@@ -29,7 +29,8 @@ import java.util.Collections;
 import java.util.Date;
 
 /**
- *
+ * Store information about dictionary in both direction.
+ * Language -> Esperanto and Esperanto -> Language
  * @author enrico
  */
 public class Dictionary {
@@ -42,6 +43,7 @@ public class Dictionary {
     private ArrayList<DataChange> changes = new ArrayList<DataChange>();
     private Date date;
     private long maxId;
+    private String credits;
     
     /*************** lang2Name ***************/
     public void setLang2Name(String name){
@@ -87,6 +89,16 @@ public class Dictionary {
     public long getMaxId(){
         return maxId;
     }
+    
+    /*************** credits ***************/
+    public void setCredits(String credits){
+        this.credits = credits;
+    }
+    
+    public String getCredits(){
+        return credits;
+    }
+    
     
    public TableRow updateRow(Direction direction, TableRow newRow, TableRow oldRow){
         if (direction == Direction.UNSPECIFIED){

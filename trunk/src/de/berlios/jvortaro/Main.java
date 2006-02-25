@@ -122,6 +122,19 @@ public class Main extends javax.swing.JFrame {
         if (jFollowCheck.isSelected())
             timer.start();
         
+        /** Update properties file */
+        try {
+            if (service.isPropertiesFileOld()) {
+                //WaitWindow window = new WaitWindow();
+                //window.setVisible(true);
+                System.out.println("Updating properties file");
+                service.updatePropertiesFiles();
+                //window.setVisible(false);
+            }
+        } catch (Exception e){
+            Common.showError(e);
+        }
+        
         try {
             prop = service.loadProperties();
 

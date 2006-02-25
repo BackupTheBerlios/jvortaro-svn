@@ -92,7 +92,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="jSearchButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Serĉu!!"/>
+        <Property name="text" type="java.lang.String" value="Ser&#x109;u!!"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jSearchButtonActionPerformed"/>

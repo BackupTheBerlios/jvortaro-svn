@@ -84,6 +84,10 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
     public void importLanguages( ArrayList<TableRow> dati, String langFrom, String langTo, boolean isChached) throws Exception{
     }
     
+    public void readDatabase(String lang){
+        
+    }
+    
     public void changeLanguage(String from, String to) {
         
         if (to.equalsIgnoreCase(langTo) && from.equalsIgnoreCase(langFrom))

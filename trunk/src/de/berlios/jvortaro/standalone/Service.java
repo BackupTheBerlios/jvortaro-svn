@@ -23,6 +23,8 @@
 
 package de.berlios.jvortaro.standalone;
 
+import de.berlios.jvortaro.Common;
+import de.berlios.jvortaro.bean.Dictionary;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -33,7 +35,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
+import java.util.zip.GZIPInputStream;
 import javax.swing.JOptionPane;
 
 /**
@@ -92,4 +96,59 @@ public class Service implements de.berlios.jvortaro.interfaces.Service {
             prop.store(new FileOutputStream(getUserDirectory()+"/jVortaro.properties"),"Default configuration");
     }
     
+    /**
+     * Check if the properties file exists and it's updated
+     * */
+    public boolean isPropertiesFileOld() throws Exception {
+        
+        File configFile = new File(getUserDirectory()+"/jVortaro.properties");
+        if (!configFile.exists())
+            return true;
+        
+        File configDirectory = new File(getUserDirectory());
+        File[] files = configDirectory.listFiles();
+        for (File file: files){
+            if (file.getName().endsWith(".vortaro"))
+                if (file.lastModified() > configFile.lastModified())
+                    return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Read from the .jVortaro directory and update the jVortaro.properties
+     * file.
+     * It reads each file and summerizes dictionary into the properties.file 
+     * for fast access by the programm
+     *
+     * TODO: add custom dictionary support
+     * */
+    public void updatePropertiesFiles() throws Exception{
+        Properties properties = loadProperties();
+        String languages = properties.getProperty("languages","");
+        
+        File configDirectory = new File(getUserDirectory());
+        File[] files = configDirectory.listFiles();
+        String nameList = "";
+        for (File file: files){
+            
+            if (file.getName().endsWith(".vortaro")){
+                String name = file.getName().substring(0, file.getName().length()-8);
+
+                nameList += name+ " ";
+                properties.setProperty(name+".to","true");
+                properties.setProperty(name+".from","true");
+                Common c = new Common();
+                Dictionary dictionary = c.readXmlDatabase(new GZIPInputStream(new FileInputStream(file)));
+
+                properties.setProperty(name+".date", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(dictionary.getDate()));
+                properties.setProperty(name+".credits", dictionary.getCredits());
+                
+            }
+        }
+        properties.setProperty("languages",nameList);
+
+        saveProperties(properties);
+    }
+
 }
