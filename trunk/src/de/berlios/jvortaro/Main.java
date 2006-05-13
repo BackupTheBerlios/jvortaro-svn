@@ -58,7 +58,7 @@ public class Main extends javax.swing.JFrame {
     private ArrayList<LanguageInformation> languages;
     private Timer timer;
     private String lastClipboard = null;
-    public Properties prop;
+    private Configuration prop = null;
     Database database;
     Service service;
     static public Main main;
@@ -95,7 +95,7 @@ public class Main extends javax.swing.JFrame {
             database = new de.berlios.jvortaro.standalone.Database();
             service = new de.berlios.jvortaro.standalone.Service();
         }
-        /** Imposto immagine dell'applicazione **/
+        /** set application icon **/
         Image image = null;
         try {
             image = ImageIO.read(getClass().getResource("/icon.png"));
@@ -136,7 +136,9 @@ public class Main extends javax.swing.JFrame {
         }
         
         try {
-            prop = service.loadProperties();
+            prop =  Configuration.getInstance(database, service);
+            
+            //prop = service.loadProperties();
 
             ComboBoxModel model = getLanguagesAvailable();
             jLanguagesCombo.setModel(model);
@@ -148,8 +150,8 @@ public class Main extends javax.swing.JFrame {
         }catch(Exception e){
             Common.showError(e);
         }
-        if (prop == null)
-            prop = new Properties();
+        /*if (prop == null)
+            prop = new Properties();*/
         if (prop.getProperty("selected")!= null){
             String selected = prop.getProperty("selected");
             ComboBoxModel model = jLanguagesCombo.getModel();
@@ -604,12 +606,16 @@ public class Main extends javax.swing.JFrame {
         askBeforeExit();
     }//GEN-LAST:event_formWindowClosing
     
+    /**
+     * Ask user before exit application
+     */
     private void askBeforeExit (){
         
         try {
             String langSelected = (String)jLanguagesCombo.getSelectedItem();
             prop.setProperty("selected", langSelected);
-            service.saveProperties(prop);
+            prop.save();
+            //service.saveProperties(prop);
         } catch(Exception e){
             Common.showError(e);
         }
@@ -623,7 +629,7 @@ public class Main extends javax.swing.JFrame {
     }
     
     /**
-     * update gui with available languages
+     * Update gui with available languages
      */
     private ComboBoxModel getLanguagesAvailable() throws Exception{
         
@@ -654,8 +660,8 @@ public class Main extends javax.swing.JFrame {
     }
 
     /**
-     * Metodo richiamato per gestire la ricerca da clipboard
-     */
+     * Check if there is new content on clipboard
+     **/
     private void followClipboard(){
        String result = service.getClipboard();
        if (result == null) {
@@ -673,7 +679,7 @@ public class Main extends javax.swing.JFrame {
     
     /**
      * search for a word in database
-     */
+     **/
     private void search(){
         try {
             String lang1 = jLang1Radio.getText();
@@ -706,7 +712,7 @@ public class Main extends javax.swing.JFrame {
     
     /**
      *  Change chars to Esperanto in cell editor
-     * */
+     **/
     private void jEditorFieldKeyReleased(java.awt.event.KeyEvent evt) {
 
         JTextField field = (JTextField) evt.getComponent();
@@ -746,7 +752,9 @@ public class Main extends javax.swing.JFrame {
 
     }
     
-    /** Replace combination of chars with esperanto one */
+    /** 
+     * Replace combination of chars with esperanto one 
+     */
     private String replaceChars(String text){
         
         text = text.replaceAll("s^","sx");

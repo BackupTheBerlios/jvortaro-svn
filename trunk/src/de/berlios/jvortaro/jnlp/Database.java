@@ -22,6 +22,8 @@
  */
 
 package de.berlios.jvortaro.jnlp;
+import com.sun.security.auth.login.ConfigFile;
+import de.berlios.jvortaro.Configuration;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -97,7 +99,8 @@ public class Database implements de.berlios.jvortaro.interfaces.Database {
             
             boolean download = true;
             boolean nuovo = true;
-            Properties properties = Main.main.prop;
+            //Properties properties = Main.main.prop;
+            Configuration properties = Configuration.getInstance();
             
             if (Common.find(names,  database+".vortaro") ) {
                 // dict exists locally
