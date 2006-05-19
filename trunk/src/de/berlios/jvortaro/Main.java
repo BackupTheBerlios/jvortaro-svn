@@ -61,14 +61,16 @@ public class Main extends javax.swing.JFrame {
     private Configuration prop = null;
     Database database;
     Service service;
-    static public Main main;
+    @Deprecated static public Main main;
     private boolean webstart = false;
     private JTextField tableEditor;
     private JPopupMenu menu;
             
     public Main() {
+        // Init visual component
         initComponents();
         
+        // init esperanto charset modification
         tableEditor = new JTextField();
         tableEditor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -76,8 +78,10 @@ public class Main extends javax.swing.JFrame {
             }
         });
         
+        // set default selection model
         mainTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         
+        // deprecato
         main = this;
 
         if (jScrollPane.getComponentPopupMenu() != null)
@@ -87,6 +91,7 @@ public class Main extends javax.swing.JFrame {
         jScrollPane.setComponentPopupMenu(null);
         mainTable.setComponentPopupMenu(null);
         
+        // select the jnlp operation mode
         if (System.getProperty("javaws.debug")!= null){
             database = new de.berlios.jvortaro.jnlp.Database();
             service = new de.berlios.jvortaro.jnlp.Service();
@@ -95,23 +100,23 @@ public class Main extends javax.swing.JFrame {
             database = new de.berlios.jvortaro.standalone.Database();
             service = new de.berlios.jvortaro.standalone.Service();
         }
-        /** set application icon **/
+        
+        // set application icon 
         Image image = null;
         try {
             image = ImageIO.read(getClass().getResource("/icon.png"));
-        }
-        catch (Exception e) {
+        }catch (Exception e) {
             Common.showError(e);
         }
-        
         if (image != null)
             setIconImage(image);
         
+        // set combox button group
         buttonGroup.add(jLang1Radio);
         buttonGroup.add(jLang2Radio);
         getRootPane().setDefaultButton(jSearchButton);
-
         
+        // start clipboard monitor subsystem
         int delay = 1000; //milliseconds
         ActionListener taskPerformer = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -135,6 +140,7 @@ public class Main extends javax.swing.JFrame {
             Common.showError(e);
         }
         
+        // check properties file; try to find better solution
         try {
             prop =  Configuration.getInstance(database, service);
             
@@ -150,8 +156,12 @@ public class Main extends javax.swing.JFrame {
         }catch(Exception e){
             Common.showError(e);
         }
-        /*if (prop == null)
-            prop = new Properties();*/
+        
+        
+        
+       /* if (prop == null) FIX
+            prop = new Properties(); */
+        // preselet default language
         if (prop.getProperty("selected")!= null){
             String selected = prop.getProperty("selected");
             ComboBoxModel model = jLanguagesCombo.getModel();
@@ -400,6 +410,11 @@ public class Main extends javax.swing.JFrame {
     }
     // </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Popup menu -> insert
+     *
+     * Insert new line (TableRow) in TableModel
+     */
     private void jInsertMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInsertMenuItemActionPerformed
         ListSelectionModel selectionModel = mainTable.getSelectionModel();
         int max = selectionModel.getMaxSelectionIndex();
@@ -409,6 +424,11 @@ public class Main extends javax.swing.JFrame {
            
     }//GEN-LAST:event_jInsertMenuItemActionPerformed
 
+    /**
+     * Popup menu -> delete
+     *
+     * Remove selected rows from TableModel
+     */
     private void jRemoveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRemoveMenuItemActionPerformed
 
         ListSelectionModel selectionModel = mainTable.getSelectionModel();
@@ -440,11 +460,17 @@ public class Main extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jEditButtonActionPerformed
 
+    /**
+     * User confirmation before exiting
+     */
     private void jButtonExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExitActionPerformed
 
         askBeforeExit();
     }//GEN-LAST:event_jButtonExitActionPerformed
-
+    
+    /**
+     * Show about dialog (and dictionary filelist)
+     */
     private void jButtonAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAboutActionPerformed
 
         About about = new About(this,true);
@@ -452,6 +478,9 @@ public class Main extends javax.swing.JFrame {
         about.setVisible(true);
     }//GEN-LAST:event_jButtonAboutActionPerformed
             
+    /**
+     * Manage charset conversion for esperanto
+     */
     private void jTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldKeyReleased
         
      
@@ -469,6 +498,9 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextFieldKeyReleased
     
+    /**
+     * Start-stop checking clibboard subtask
+     */ 
     private void jFollowCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFollowCheckActionPerformed
         if (jFollowCheck.isSelected())
             timer.start();
@@ -476,7 +508,8 @@ public class Main extends javax.swing.JFrame {
             timer.stop();
         
     }//GEN-LAST:event_jFollowCheckActionPerformed
-        
+    
+    
     private void jImportMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jImportMenuItemActionPerformed
 
         
@@ -486,7 +519,7 @@ public class Main extends javax.swing.JFrame {
         
         if (ret == JFileChooser.APPROVE_OPTION) {
             File[] files = fc.getSelectedFiles();
-            //This is where a real application would open the file.
+            
             for (int i=0; i<files.length; i++){
                 File file = files[i];
                 System.err.println("Opening file "+file.getName());
@@ -500,23 +533,28 @@ public class Main extends javax.swing.JFrame {
                 ArrayList<TableRow> dati = imp.importFile(file);
 
                 String[] langs = names[0].split("_");
-            try{
-                database.importLanguages(dati, langs[0], langs[1], true);
-            }catch(Exception e){
-                Common.showError(e);
+                try{
+                    database.importLanguages(dati, langs[0], langs[1], true);
+                }catch(Exception e){
+                    Common.showError(e);
+                }
             }
-        }
-
             
         } else
             System.err.println("Cancel");
         
     }//GEN-LAST:event_jImportMenuItemActionPerformed
     
+    /**
+     * Search for a new item
+     */
     private void jSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSearchButtonActionPerformed
         search();
     }//GEN-LAST:event_jSearchButtonActionPerformed
     
+    /** 
+     * Switch current language language from checkbox (i.e. direction)
+     */
     private void jLang2RadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLang2RadioActionPerformed
         
         String lang1 = jLang1Radio.getText();
@@ -528,6 +566,9 @@ public class Main extends javax.swing.JFrame {
         jScrollPane.repaint();
     }//GEN-LAST:event_jLang2RadioActionPerformed
     
+    /**
+     * Switch current language language from checkbox (i.e. direction)
+     */
     private void jLang1RadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLang1RadioActionPerformed
         
         final String lang1 = jLang1Radio.getText();
@@ -554,6 +595,9 @@ public class Main extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jLang1RadioActionPerformed
     
+    /**
+     * Select new language from combo box
+     */
     private void jLanguagesComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLanguagesComboActionPerformed
         
         String langSelected = (String)jLanguagesCombo.getSelectedItem();
@@ -601,13 +645,16 @@ public class Main extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jLanguagesComboActionPerformed
     
+    /**
+     * Ask user before closing frame
+     */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         
         askBeforeExit();
     }//GEN-LAST:event_formWindowClosing
     
     /**
-     * Ask user before exit application
+     * Ask user before exiting
      */
     private void askBeforeExit (){
         
@@ -651,7 +698,7 @@ public class Main extends javax.swing.JFrame {
     }
     
     /**
-     * Clear field changing language
+     * Clear input field and table when changing language
      */
     private void  resetTableAndTextField(){
         TableModel model = (TableModel)mainTable.getModel();
@@ -661,7 +708,7 @@ public class Main extends javax.swing.JFrame {
 
     /**
      * Check if there is new content on clipboard
-     **/
+     */
     private void followClipboard(){
        String result = service.getClipboard();
        if (result == null) {
@@ -679,7 +726,7 @@ public class Main extends javax.swing.JFrame {
     
     /**
      * search for a word in database
-     **/
+     */
     private void search(){
         try {
             String lang1 = jLang1Radio.getText();
@@ -712,7 +759,7 @@ public class Main extends javax.swing.JFrame {
     
     /**
      *  Change chars to Esperanto in cell editor
-     **/
+     */
     private void jEditorFieldKeyReleased(java.awt.event.KeyEvent evt) {
 
         JTextField field = (JTextField) evt.getComponent();
@@ -730,7 +777,7 @@ public class Main extends javax.swing.JFrame {
     }   
           
     /**
-     * Change column headers and editor
+     * Change column headers and cell editor
      */
     private void changeColumnHeaders(String lang1, String lang2){
         
@@ -753,7 +800,7 @@ public class Main extends javax.swing.JFrame {
     }
     
     /** 
-     * Replace combination of chars with esperanto one 
+     * Replace combination of chars with esperanto ones
      */
     private String replaceChars(String text){
         
@@ -782,7 +829,10 @@ public class Main extends javax.swing.JFrame {
         return text;
     }
     
-     public static void main(String args[]) {
+    /**
+     * Start the application
+     */
+    public static void main(String args[]) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) { }

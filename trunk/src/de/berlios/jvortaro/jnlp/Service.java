@@ -68,7 +68,7 @@ public class Service implements de.berlios.jvortaro.interfaces.Service {
     }
 
 
-    public java.util.Properties loadProperties() throws Exception {
+    public java.util.Properties loadLocalProperties() throws Exception {
         Properties properties = new Properties();
         
         try { 
@@ -98,7 +98,7 @@ public class Service implements de.berlios.jvortaro.interfaces.Service {
     }
 
     
-    public void saveProperties(java.util.Properties properties) throws Exception {
+    public void saveLocalProperties(java.util.Properties properties) throws Exception {
         try { 
             PersistenceService ps = (PersistenceService)ServiceManager.lookup("javax.jnlp.PersistenceService"); 
             BasicService bs = (BasicService)ServiceManager.lookup("javax.jnlp.BasicService"); 

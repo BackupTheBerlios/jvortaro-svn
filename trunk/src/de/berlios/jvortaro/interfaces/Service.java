@@ -34,8 +34,8 @@ public interface Service {
     
     /* Legge da clipboard informazioni */
     String getClipboard();
-    void saveProperties(Properties pref) throws Exception;
-    Properties loadProperties() throws Exception;
-    boolean isPropertiesFileOld() throws Exception;
+    void saveLocalProperties(Properties pref) throws Exception;
+    Properties loadLocalProperties() throws Exception;
+    @Deprecated boolean isPropertiesFileOld() throws Exception;
     void updatePropertiesFiles() throws Exception;
 }

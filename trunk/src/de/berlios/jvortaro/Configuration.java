@@ -36,12 +36,13 @@ public class Configuration {
     static private Database database = null;
     static private Service service = null;
     static private Configuration configuration = null;
-    private Properties properties;
+    private Properties localProperties;
+    private Properties remoteProperties;
     
     public Configuration(Database database, Service service) throws Exception{
         this.database = database;
         this.service = service;
-        properties = service.loadProperties();
+        localProperties = service.loadLocalProperties();
     }
     
     synchronized public static Configuration getInstance(Database database, Service service) throws Exception {
@@ -58,15 +59,15 @@ public class Configuration {
     }
     
     public String getProperty(String name){
-        return properties.getProperty(name);
+        return localProperties.getProperty(name);
     }
     
     public void setProperty(String name, String value){
-        properties.setProperty(name, value);
+        localProperties.setProperty(name, value);
     }
     
     public void save() throws Exception {
-        service.saveProperties(properties);
+        service.saveLocalProperties(localProperties);
     }
 }
 

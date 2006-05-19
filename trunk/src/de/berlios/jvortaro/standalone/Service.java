@@ -81,7 +81,7 @@ public class Service implements de.berlios.jvortaro.interfaces.Service {
         return result;
     }
 
-    public Properties loadProperties() throws Exception{
+    public Properties loadLocalProperties() throws Exception{
         Properties properties = new Properties();
         try{
             InputStream is = new FileInputStream(getUserDirectory()+"/jVortaro.properties");
@@ -92,7 +92,7 @@ public class Service implements de.berlios.jvortaro.interfaces.Service {
         return properties;
     }
 
-    public void saveProperties(Properties prop) throws Exception {
+    public void saveLocalProperties(Properties prop) throws Exception {
             prop.store(new FileOutputStream(getUserDirectory()+"/jVortaro.properties"),"Default configuration");
     }
     
@@ -124,7 +124,7 @@ public class Service implements de.berlios.jvortaro.interfaces.Service {
      * TODO: add custom dictionary support
      * */
     public void updatePropertiesFiles() throws Exception{
-        Properties properties = loadProperties();
+        Properties properties = loadLocalProperties();
         String languages = properties.getProperty("languages","");
         
         File configDirectory = new File(getUserDirectory());
@@ -148,7 +148,7 @@ public class Service implements de.berlios.jvortaro.interfaces.Service {
         }
         properties.setProperty("languages",nameList);
 
-        saveProperties(properties);
+        saveLocalProperties(properties);
     }
 
 }
